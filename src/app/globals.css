@@ -5,18 +5,28 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* Paleta da marca — uso: bg-surface, text-red-primary, from-red-deep... */
+  /* Paleta da marca — uso: bg-surface, text-red-primary, bg-bone, text-ink... */
   --color-background-secondary: var(--background-secondary);
   --color-surface: var(--surface);
   --color-red-primary: var(--red-primary);
   --color-red-light: var(--red-light);
   --color-red-dark: var(--red-dark);
   --color-red-deep: var(--red-deep);
+  /* Seção clara (Sobre) */
+  --color-bone: var(--bone);
+  --color-bone-2: var(--bone-2);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
 
-  --animate-marquee: marquee 90s linear infinite;
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-blink: blink 2s steps(1) infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-scroll-cue: scroll-cue 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   @keyframes marquee {
     to {
-      transform: translateX(-100%);
+      transform: translateX(-50%);
     }
   }
   @keyframes dash-flow {
@@ -38,13 +48,37 @@
       transform: translateY(-8px);
     }
   }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes scroll-cue {
+    0% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+    45% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+    55% {
+      transform: scaleY(1);
+      transform-origin: bottom;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+  }
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-hand: var(--font-caveat);
-  --font-heading: var(--font-geist-sans);
+  --font-display: var(--font-archivo);
+  --font-serif: var(--font-instrument-serif);
+  --font-heading: var(--font-archivo);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -83,25 +117,31 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Tema único (dark). 80% preto/grafite · 15% branco/cinza · 5% vermelho */
+/* Tema escuro com uma seção clara (bone). Vermelho é sinal, não papel de parede. */
 :root {
   /* Backgrounds */
-  --background: #030303; /* Preto absoluto — fundo principal */
-  --background-secondary: #0b0b0d; /* Preto elevado — seções e superfícies */
-  --surface: #19191c; /* Grafite — cards e bordas */
+  --background: #050506; /* Ink — fundo principal */
+  --background-secondary: #0b0b0d; /* Painéis */
+  --surface: #141417; /* Cards e chips */
 
   /* Brand */
   --red-primary: #e50914; /* Marca e botões */
-  --red-light: #ff343b; /* Reflexos e efeitos */
+  --red-light: #ff343b; /* Destaques e brilho */
   --red-dark: #85080e; /* Gradientes */
   --red-deep: #480609; /* Transições de fundo */
 
+  /* Seção clara */
+  --bone: #eceae4;
+  --bone-2: #e0ddd5;
+  --ink: #0b0b0c;
+  --ink-muted: #5d5b56;
+
   /* Typography */
-  --text-primary: #f5f5f5; /* Branco gelo — títulos */
-  --text-secondary: #a3a3a3;
+  --text-primary: #f2f2f0;
+  --text-secondary: #9a9aa0;
 
   /* Borders */
-  --border: #242428;
+  --border: #222226;
 
   /* Tokens do shadcn/ui mapeados na paleta */
   --foreground: var(--text-primary);
@@ -142,63 +182,53 @@
   * {
     @apply border-border outline-ring/50;
   }
-  /* Fundo contínuo da LP: preto absoluto + grid fino. As seções são transparentes
-     e só adicionam o próprio gradiente (glow-*) por cima. */
   body {
     @apply text-foreground;
     background-color: var(--background);
   }
-  /* Grid fixo na tela, mais visível no centro e sumindo nas bordas */
-  body::before {
+  /* Granulação de filme por cima de tudo: tira o "chapado" do preto digital */
+  body::after {
     content: "";
     position: fixed;
     inset: 0;
-    z-index: -1;
+    z-index: 100;
     pointer-events: none;
-    background-image:
-      linear-gradient(to right, rgb(255 255 255 / 0.011) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(255 255 255 / 0.011) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(
-      ellipse 65% 70% at 50% 45%,
-      black 25%,
-      transparent 100%
-    );
-  }
-  /* Celular: tela estreita e alta. A elipse do desktop apagava quase tudo;
-     aqui o grid fica visível e só some de leve nas laterais e no rodapé. */
-  @media (max-width: 767px) {
-    body::before {
-      background-image:
-        linear-gradient(to right, rgb(255 255 255 / 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgb(255 255 255 / 0.03) 1px, transparent 1px);
-      background-size: 32px 32px;
-      mask-image: linear-gradient(
-        to right,
-        transparent 0%,
-        black 18%,
-        black 82%,
-        transparent 100%
-      );
-    }
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   html {
     @apply font-sans;
-    scroll-behavior: smooth;
   }
   /* As manchas de luz passam das bordas da tela; clip não cria rolagem nem quebra o sticky */
   html,
   body {
     overflow-x: clip;
   }
+  /* Lenis controla a rolagem suave; sem ele (toque, reduced motion) o navegador assume */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis:not(.lenis-autoToggle).lenis-stopped {
+    overflow: clip;
+  }
+  .lenis [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
   @media (prefers-reduced-motion: reduce) {
-    html {
+    html:not(.lenis) {
       scroll-behavior: auto;
     }
   }
   /* Espaço para o header fixo ao navegar pelas âncoras */
   section[id] {
-    scroll-margin-top: 5.5rem;
+    scroll-margin-top: 4.5rem;
   }
   ::selection {
     background: var(--red-primary);
@@ -206,35 +236,78 @@
   }
 }
 
-/* Gradientes localizados — intercalar posições entre as seções.
-   Sem cor de fundo: o grid do body continua aparecendo. */
+/* ---------- Tipografia ---------- */
 
-/* Hero: canto superior direito, intenso */
-@utility glow-top-right {
-  background-image: radial-gradient(
-    ellipse at 90% 5%,
-    rgb(133 8 14 / 0.65) 0%,
-    rgb(72 6 9 / 0.3) 28%,
-    transparent 65%
-  );
+/* Display expandida (conversa com o logo JEDTEC): H1, H2 e números grandes */
+@utility text-display {
+  font-family: var(--font-archivo), var(--font-geist-sans), sans-serif;
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+  font-kerning: normal;
 }
 
-/* Versão suave do glow da hero (celular) */
-@utility glow-top-right-soft {
-  background-image: radial-gradient(
-    ellipse at 90% 5%,
-    rgb(133 8 14 / 0.32) 0%,
-    rgb(72 6 9 / 0.14) 28%,
-    transparent 60%
-  );
+/* H2 de seção: um tamanho só para Trabalho, Capacidades, Stack e Processo.
+   Cresce com a tela até 1440 (6,4vw = 92,16px) e para aí, junto com o
+   container: acima disso o título não avança sobre o texto de apoio. */
+:root {
+  --h2-size: clamp(2.6rem, 6.4vw, 5.76rem);
+}
+@utility text-h2 {
+  font-size: var(--h2-size);
 }
 
-/* Grid avulso, para elementos fora do fluxo (cards, overlays) */
+/* Apoio ao lado do H2 (com self-end): a última linha do parágrafo assenta
+   na linha de base da última linha do título. A base da Archivo fica 0,115em
+   acima do fim da linha (line-height 0.9); a do texto de apoio (18px,
+   leading-relaxed), ~8px acima do fim do parágrafo. */
+@utility pb-h2-base {
+  padding-bottom: max(0px, calc(var(--h2-size) * 0.115 - 0.5rem));
+}
+
+/* Segunda voz da Archivo: menos larga e menos pesada que a display, para
+   títulos de card e de etapa. Mesmo tracking, para conversar com H1 e H2. */
+@utility text-display-2 {
+  font-family: var(--font-archivo), var(--font-geist-sans), sans-serif;
+  font-stretch: 108%;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+  font-kerning: normal;
+}
+
+/* Label técnico: mono, caixa alta, tracking largo */
+@utility text-label {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Texto vazado (só contorno), para wordmarks e números decorativos */
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px currentColor;
+}
+
+/* ---------- Fundos e efeitos ---------- */
+
+/* Grid fino, para áreas que pedem "papel milimetrado" */
 @utility bg-grid {
   background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.014) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.014) 1px, transparent 1px);
-  background-size: 48px 48px;
+    linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Mesmo grid, para a seção clara */
+@utility bg-grid-ink {
+  background-image:
+    linear-gradient(to right, rgb(11 11 12 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(11 11 12 / 0.06) 1px, transparent 1px);
+  background-size: 64px 64px;
 }
 
 @utility glow-red {
@@ -247,54 +320,36 @@
   text-shadow: 0 0 24px rgb(255 52 59 / 0.45);
 }
 
-
-/* Impulso de sinapse que percorre o site (synapse-trail.tsx) */
-.synapse-trail .synapse-core {
-  fill: #3a3a40;
-  transition: fill 0.4s ease;
-}
-.synapse-trail .synapse-halo {
-  fill: #e50914;
-  opacity: 0;
-  transform: scale(0.4);
-  transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
-}
-.synapse-trail .is-active .synapse-core {
-  fill: #ff343b;
-}
-.synapse-trail .is-active .synapse-halo {
-  opacity: 0.08;
-  transform: scale(1);
-}
-.synapse-trail .synapse-pulse {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: synapse-pulse 1.8s ease-out infinite;
-}
-@keyframes synapse-pulse {
-  from {
-    opacity: 0.8;
-    transform: scale(0.6);
-  }
-  to {
-    opacity: 0;
-    transform: scale(2.2);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .synapse-trail .synapse-pulse {
-    animation: none;
-  }
+/* Some nas laterais (faixas e marquees) */
+@utility fade-x {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
 }
 
 /* Entrada da foto da hero em CSS (roda antes do JavaScript carregar) */
 .hero-rise {
   animation: hero-rise 0.9s ease-out both;
 }
+
+/* Linha de título subindo da máscara, em CSS (SplitLines `immediate`) */
+@keyframes split-rise {
+  from {
+    transform: translateY(108%);
+  }
+}
+.split-rise {
+  animation: split-rise 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-rise {
+  .hero-rise,
+  .split-rise {
     animation: none;
   }
 }
+

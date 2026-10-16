@@ -1,459 +1,350 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { motion, useReducedMotion } from "motion/react"
 import {
-  ArrowUpRight,
-  ChartColumnIncreasing,
-  CircleCheck,
-  CodeXml,
-  Download,
-  FileText,
-  GraduationCap,
-  type LucideIcon,
-} from "lucide-react"
-import { buttonVariants } from "@/components/ui/button"
-import { Reveal } from "@/components/reveal"
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+  type PointerEvent,
+  type ReactNode,
+} from "react"
+import { useInView } from "motion/react"
+import { ArrowDown } from "lucide-react"
+import { AboutConfig, linkLine, type AboutLink } from "@/components/about-config"
+import { AboutFigure } from "@/components/about-figure"
+import { AboutSheet } from "@/components/about-sheet"
+import { AboutStrike } from "@/components/about-strike"
+import { goTo } from "@/components/chrome-nav"
+import { useScramble } from "@/components/chrome-scramble"
+import { ButtonLink } from "@/components/kit/button-link"
+import { SectionLabel } from "@/components/kit/section-label"
+import { SplitLines } from "@/components/kit/split-lines"
 import { site } from "@/lib/site"
-import { Eyebrow } from "@/components/eyebrow"
 import { cn } from "@/lib/utils"
 
-/** Camadas da pilha, de cima (problema) para baixo (resultado). */
-const layers: { label: string; icon: LucideIcon }[] = [
-  { label: "Entender", icon: FileText },
-  { label: "Escolher o caminho", icon: CircleCheck },
-  { label: "Construir", icon: CodeXml },
-  { label: "Entregar", icon: ChartColumnIncreasing },
+/**
+ * Statement em duas vozes: a premissa menor, em cinza (com o grifo de
+ * revisor em "mais complexa"), e a resposta enorme. O tamanho do h2 é o da
+ * resposta; a premissa encolhe em `em`, então a máscara de cada linha (em
+ * `em` do h2) sobra para acentos e cedilha.
+ */
+const statement: ReactNode[] = [
+  "Boas soluções não começam pela",
+  <>
+    tecnologia <AboutStrike>mais complexa</AboutStrike>.
+  </>,
+  // No celular a resposta vira um cartaz de 4 linhas, uma palavra por linha
+  <>
+    Começam
+    <br className="sm:hidden" /> pela
+  </>,
+  <>
+    escolha
+    <br className="sm:hidden" />{" "}
+    <span className="font-serif text-[1.08em] font-normal tracking-[-0.01em] [font-stretch:normal] [font-synthesis:none]">
+      certa.
+    </span>
+  </>,
 ]
 
-/** Passos do processo; cada um acende a camada de mesmo índice. */
-const steps: { title: string; text: string; image: string }[] = [
-  {
-    title: "Entender",
-    text: "Negócio, objetivo e quem vai usar.",
-    image: "/processo/01-entender.svg",
-  },
-  {
-    title: "Escolher o caminho",
-    text: "A solução certa para o problema.",
-    image: "/processo/02-escolher-caminho.svg",
-  },
-  {
-    title: "Construir",
-    text: "Código limpo, rápido e fácil de manter.",
-    image: "/processo/03-construir.svg",
-  },
-  {
-    title: "Entregar",
-    text: "Colocar no ar e acompanhar de perto.",
-    image: "/processo/04-entregar.svg",
-  },
-]
+const statementLine = (i: number) =>
+  i < 2
+    ? cn(
+        // No celular a premissa cabe em uma linha cada (sem quebra dentro da máscara)
+        "text-ink-muted text-[0.3em] leading-[1.12] font-semibold tracking-[-0.022em] sm:text-[0.34em] sm:leading-[1.08]",
+        i === 1 && "mb-[0.6em]",
+      )
+    : undefined
 
-/** Tempo em cada etapa antes de acender a próxima (ms). */
-const CYCLE = 2600
-
-export function About() {
-  const reduceMotion = useReducedMotion()
-  const [active, setActive] = useState(1)
-  const [paused, setPaused] = useState(false)
-
-  useEffect(() => {
-    if (paused || reduceMotion) return
-    const id = setTimeout(() => setActive((i) => (i + 1) % steps.length), CYCLE)
-    return () => clearTimeout(id)
-  }, [active, paused, reduceMotion])
-
-  const focus = (i: number) => {
-    setActive(i)
-    setPaused(true)
+/**
+ * Trecho da bio ligado a uma linha do `jedson.config.ts`, como uma nota de
+ * rodapé: a chamada "L2" é a pista; mouse/foco acende os dois lados
+ * (marca-texto aqui, linha lá) e, no toque, a chamada alterna.
+ */
+function Ref({
+  link,
+  active,
+  onLink,
+  children,
+  after,
+  end,
+}: {
+  link: AboutLink
+  active: AboutLink | null
+  onLink: (link: AboutLink | null) => void
+  children: ReactNode
+  /** Pontuação que fecha o trecho: fica antes da chamada, fora do marca-texto. */
+  after?: string
+  /** O que vem colado depois da chamada (o fim de matéria), sem quebrar dela. */
+  end?: ReactNode
+}) {
+  const on = active === link
+  const line = linkLine[link]
+  // Último ponteiro que apertou a chamada: com mouse o hover já acendeu e o
+  // clique só confirma; no toque (e no teclado) o clique alterna
+  const pointer = useRef("")
+  const mouse = (fn: () => void) => (e: PointerEvent) => {
+    if (e.pointerType === "mouse") fn()
   }
-
   return (
-    <section id="sobre" className="relative py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Celular: título → ilustração → resto do texto (a coluna de texto
-            vira "contents" e cada bloco recebe uma ordem). Desktop: duas colunas. */}
-        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:items-center lg:gap-8">
-          {/* Texto */}
-          <div className="contents lg:block">
-            <Reveal className="order-1">
-              <Eyebrow>Sobre mim</Eyebrow>
-              <h2 className="mt-5 text-4xl leading-[1.08] font-semibold tracking-tight text-balance sm:text-5xl">
-                Antes de escrever código,{" "}
-                <span className="text-red-light glow-text-red">
-                  eu quero entender o problema.
-                </span>
-              </h2>
-            </Reveal>
-
-            <Reveal delay={0.1} className="order-3">
-              <p className="text-muted-foreground mt-6 max-w-xl text-base leading-relaxed sm:text-lg">
-                Trabalho do front ao back, sozinho ou junto do time: em agência,
-                como freela ou dentro de produto. A IA fica com o trabalho
-                repetitivo, e eu fico com o que importa:{" "}
-                <span className="text-foreground">pensar bem a solução.</span>
-              </p>
-              <p className="text-muted-foreground mt-4 max-w-xl text-base leading-relaxed sm:text-lg">
-                E você fala direto com quem desenvolve,{" "}
-                <span className="text-foreground">do briefing à entrega.</span>
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.15} className="order-3">
-              <blockquote className="border-red-primary mt-8 max-w-xl border-l-2 pl-5 text-lg leading-snug font-medium text-balance">
-                Boas soluções não começam pela tecnologia mais complexa, mas
-                pela escolha certa para cada problema.
-              </blockquote>
-            </Reveal>
-
-            <Reveal
-              delay={0.2}
-              className="order-3 mt-8 flex flex-wrap items-center gap-3"
-            >
-              <a
-                href={site.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  buttonVariants(),
-                  "hover:bg-red-light h-11 px-5 text-sm shadow-[0_8px_32px_-10px_rgb(229_9_20/0.7)]",
-                )}
-              >
-                Me conta seu projeto
-                <ArrowUpRight className="transition-transform group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5" />
-              </a>
-              {site.resume && (
-                <a
-                  href={site.resume}
-                  download
-                  className={cn(
-                    buttonVariants({ variant: "outline" }),
-                    "hover:border-foreground/30 h-11 bg-transparent px-5 text-sm",
-                  )}
-                >
-                  <Download />
-                  Baixar currículo
-                </a>
-              )}
-            </Reveal>
-
-            <Reveal delay={0.25} className="order-3">
-              <p className="text-muted-foreground mt-10 flex items-start gap-2.5 text-sm">
-                <GraduationCap className="mt-0.5 size-4 shrink-0" />
-                <span>
-                  <span className="text-foreground/80">Formação:</span> Análise
-                  e Desenvolvimento de Sistemas · Curso de arquitetura de
-                  multi-agentes (StartSe)
-                </span>
-              </p>
-            </Reveal>
-          </div>
-
-          {/* Pilha 3D */}
-          <Reveal delay={0.1} className="order-2 mt-6 lg:mt-0">
-            <ProcessStack active={active} onFocus={focus} />
-          </Reveal>
-        </div>
-
-        {/* Passos: cards ilustrados, sincronizados com a pilha */}
-        <Reveal delay={0.15}>
-          <ol
-            onPointerLeave={() => setPaused(false)}
-            className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4"
-          >
-            {steps.map((step, i) => {
-              const on = i === active
-              return (
-                <li key={step.title}>
-                  <button
-                    type="button"
-                    onPointerEnter={() => focus(i)}
-                    onFocus={() => focus(i)}
-                    onClick={() => focus(i)}
-                    className={cn(
-                      "bg-background-secondary/60 flex h-full w-full flex-row items-center overflow-hidden rounded-2xl border text-left sm:flex-col sm:items-stretch backdrop-blur-sm transition-[border-color,box-shadow,transform] duration-500",
-                      on
-                        ? "border-red-primary/60 -translate-y-1 shadow-[0_20px_50px_-24px_rgb(229_9_20/0.7)]"
-                        : "border-border/80 hover:border-foreground/20",
-                    )}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element -- SVG estático, sem ganho com next/image */}
-                    <img
-                      src={step.image}
-                      alt=""
-                      width={420}
-                      height={300}
-                      loading="lazy"
-                      className={cn(
-                        "aspect-[7/5] w-[42%] shrink-0 transition-[opacity,transform] duration-500 sm:w-full",
-                        on ? "scale-[1.03] opacity-100" : "opacity-70",
-                      )}
-                    />
-                    <span className="sm:border-border/60 block p-4 pl-1 sm:border-t sm:p-5">
-                      <span className="text-red-light font-mono text-sm">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span
-                        className={cn(
-                          "mt-1 block text-lg font-semibold tracking-tight transition-colors",
-                          on ? "text-foreground" : "text-foreground/85",
-                        )}
-                      >
-                        {step.title}
-                      </span>
-                      <span className="text-muted-foreground mt-1 block text-sm leading-snug">
-                        {step.text}
-                      </span>
-                    </span>
-                  </button>
-                </li>
-              )
-            })}
-          </ol>
-        </Reveal>
-      </div>
-    </section>
+    <span
+      onPointerEnter={mouse(() => onLink(link))}
+      onPointerLeave={mouse(() => onLink(null))}
+    >
+      {/* Sem sublinhado em repouso: a chamada já sinaliza, e o parágrafo
+          não vira uma fileira de links */}
+      <span
+        className={cn(
+          "ease-out-expo bg-[linear-gradient(rgb(229_9_20/0.2),rgb(229_9_20/0.2))] bg-left-bottom bg-no-repeat transition-[background-size] duration-700",
+          on ? "bg-[length:100%_0.5em]" : "bg-[length:0%_0.5em]",
+        )}
+      >
+        {children}
+      </span>
+      {/* Pontuação + chamada nunca se separam (a chamada não fica órfã).
+          A chamada sobe com `top`, então não abre a entrelinha. */}
+      <span className="whitespace-nowrap">
+        {after}
+        <button
+          type="button"
+          aria-pressed={on}
+          aria-controls={`about-cfg-${link}`}
+          aria-label={`Destacar a linha ${line} do jedson.config.ts`}
+          onPointerDown={(e) => (pointer.current = e.pointerType)}
+          // Só o foco de teclado acende; o foco do toque/clique fica com o onClick
+          onFocus={(e) => {
+            if (e.currentTarget.matches(":focus-visible")) onLink(link)
+          }}
+          // Só apaga se a ligação ainda for desta chamada: no toque, o foco sai
+          // daqui depois que o tap numa linha do config já acendeu outra
+          onBlur={() => {
+            if (on) onLink(null)
+          }}
+          onClick={() => {
+            onLink(pointer.current === "mouse" || !on ? link : null)
+            pointer.current = ""
+          }}
+          className={cn(
+            "relative isolate -top-[0.95em] ml-[0.2em] inline-block rounded-[2px] font-mono text-[11px] leading-none font-medium tracking-[0.04em] transition-colors duration-300 outline-none",
+            // outline-solid: no Tailwind 4 o outline-none zera o
+            // --tw-outline-style e, sem ele, o anel do foco nunca aparecia
+            "focus-visible:outline-solid focus-visible:outline-red-primary/60 focus-visible:outline-2 focus-visible:outline-offset-[3px]",
+            // Área de toque maior que o desenho
+            "before:absolute before:-inset-3 before:content-['']",
+            // Fundo do estado aceso: um pseudo-elemento que transborda o texto.
+            // Sem padding no botão, a chamada em repouso cola na pontuação como
+            // um sobrescrito, e acender não empurra nada
+            "after:bg-red-primary after:absolute after:-inset-x-[0.35em] after:-inset-y-[0.25em] after:-z-10 after:rounded-[4px] after:transition-opacity after:duration-300 after:content-['']",
+            // Em repouso, só o mono em vermelho mais fechado (o red-primary sobre
+            // o bone fica em 3,8:1; este passa no AA)
+            on ? "text-white after:opacity-100" : "text-[#c1070f] after:opacity-0",
+          )}
+        >
+          L{line}
+        </button>
+        {end}
+      </span>
+    </span>
   )
 }
 
-/* ---------- Pilha isométrica ---------- */
+/** Marca de registro de gráfica (⊕), ornamento do cabeçalho. */
+function RegMark() {
+  return (
+    <svg aria-hidden viewBox="0 0 16 16" className="size-3.5 text-ink/45">
+      <circle cx="8" cy="8" r="4.5" fill="none" stroke="currentColor" />
+      <path d="M8 0v16M0 8h16" stroke="currentColor" />
+    </svg>
+  )
+}
 
-/** Prancheta da ilustração do processo (px). */
-const ARTBOARD = { width: 600, height: 720 }
-
-/** Duração de uma volta completa do ciclo (s): metade em cada arco. */
-const CYCLE_FILL = 7.5
-/** Tamanho do rastro de luz, em fração do arco. */
-const TRAIL = 0.45
-/** Camadas do rastro: quanto mais perto da ponta, mais camadas somadas. */
-const TAIL_LAYERS = [0.06, 0.12, 0.2, 0.3, 0.45]
-const TAIL_OPACITY = 0.38
-
-/** Arcos do ciclo (viewBox 600×720): esquerda desce, direita sobe. */
-const CYCLE_PATHS = [
-  "M150 150 C 30 230, 20 420, 150 520",
-  "M470 600 C 600 520, 610 300, 500 140",
-]
-
-/** Distância vertical (em 3D) entre as camadas, em px. */
-const GAP = 112
-
-function ProcessStack({
-  active,
-  onFocus,
-}: {
-  active: number
-  onFocus: (i: number) => void
-}) {
-  const reduceMotion = useReducedMotion()
-  // A ilustração é desenhada numa prancheta fixa de 600×720 e escalada para a
-  // largura disponível: pilha, setas e anotações mantêm a mesma proporção em
-  // qualquer tela (notebook, tablet, celular).
-  const boxRef = useRef<HTMLDivElement>(null)
-  const [scale, setScale] = useState(1)
+/** Título corrente da página: embaralha e se resolve quando o cabeçalho entra. */
+function RunningHead({ text }: { text: string }) {
+  const ref = useRef<HTMLParagraphElement>(null)
+  const inView = useInView(ref, { once: true, amount: 1 })
+  const [out, play] = useScramble(text)
   useEffect(() => {
-    const el = boxRef.current
-    if (!el) return
-    const observer = new ResizeObserver(([entry]) =>
-      setScale(entry.contentRect.width / ARTBOARD.width),
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
+    if (inView) play()
+  }, [inView, play])
+  return (
+    <p ref={ref} className="text-label text-ink-muted hidden md:block">
+      <span aria-hidden>{out}</span>
+      <span className="sr-only">{text}</span>
+    </p>
+  )
+}
+
+/**
+ * "Vira a folha" para o contato: um link curto (o rótulo "[06] Contato" já
+ * abre a seção seguinte logo abaixo). O rótulo embaralha como os links do menu.
+ */
+function NextPage() {
+  const label = "Contato"
+  const [text, scramble] = useScramble(label.toUpperCase())
+  return (
+    <a
+      href="#contato"
+      onPointerEnter={scramble}
+      onFocus={scramble}
+      onClick={(e: MouseEvent) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+        e.preventDefault()
+        goTo("#contato")
+      }}
+      className="group/next text-label text-ink relative flex min-h-10 items-center gap-3 rounded-sm py-2 outline-none focus-visible:ring-2 focus-visible:ring-red-primary/60"
+    >
+      <span
+        aria-hidden
+        // A largura (não scale) cresce: o fio estica e empurra o texto, sem sobrepor
+        className="bg-ink/25 ease-out-expo group-hover/next:bg-ink group-focus-visible/next:bg-ink h-px w-6 transition-[width,background-color] duration-500 group-hover/next:w-12 sm:w-10 sm:group-hover/next:w-20"
+      />
+      <span aria-hidden>{text}</span>
+      <span className="sr-only">{label}</span>
+      <ArrowDown
+        aria-hidden
+        className="ease-out-expo size-3.5 transition-transform duration-500 group-hover/next:translate-y-0.5"
+      />
+    </a>
+  )
+}
+
+export function About() {
+  const ref = useRef<HTMLElement>(null)
+  const [link, setLink] = useState<AboutLink | null>(null)
 
   return (
-    <div
-      ref={boxRef}
-      className="relative mx-auto aspect-[5/6] w-full max-w-[600px] select-none"
+    <section
+      id="sobre"
+      ref={ref}
+      aria-label="Sobre"
+      data-tone="light"
+      className="text-ink relative isolate pt-24 pb-8 sm:pt-28 sm:pb-10 lg:pt-40 lg:pb-12"
     >
-      <div
-        className="absolute top-0 left-0 origin-top-left"
-        style={{
-          width: ARTBOARD.width,
-          height: ARTBOARD.height,
-          transform: `scale(${scale})`,
-        }}
-      >
-        {/* Brilho de fundo */}
-        <div
-          aria-hidden
-          className="bg-red-dark/40 absolute inset-[20%] rounded-full blur-[90px]"
+      <AboutSheet target={ref} />
+
+      <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
+        {/* Cabeçalho de revista: seção, título da matéria e a marca de registro */}
+        <div className="border-ink/15 flex items-center justify-between gap-6 border-b pb-5">
+          {/* O índice num vermelho de texto mais fechado: o red-primary fica em
+              3,8:1 sobre o bone; este passa de 5,7:1 */}
+          <SectionLabel
+            index="05"
+            label="Sobre"
+            tone="light"
+            className="[&>span:first-child]:text-[#B8000D]"
+          />
+          <RunningHead text={`Perfil · ${site.name}`} />
+          <RegMark />
+        </div>
+
+        <SplitLines
+          as="h2"
+          lines={statement}
+          lineClassName={statementLine}
+          stagger={0.08}
+          className="text-display mt-14 text-[14vw] sm:mt-20 sm:text-[min(9.6vw,9.25rem)] lg:mt-24"
         />
 
-        {/* Cena: plano isométrico (sem perspectiva), camadas empilhadas em Z */}
-        <div className="absolute inset-0 flex scale-[1.12] items-center justify-center">
-          <div
-            className="relative h-[78px] w-[270px] [transform-style:preserve-3d]"
-            style={{
-              transform: "translateY(120px) rotateX(46deg) rotateZ(-24deg)",
-            }}
-          >
-            {/* Base */}
-            <div
-              aria-hidden
-              className="border-red-primary/70 absolute -inset-10 rounded-2xl border bg-[#0b0b0d] shadow-[0_0_50px_-6px_rgb(229_9_20/0.75),inset_0_0_30px_-10px_rgb(229_9_20/0.6)]"
-              style={{ transform: "translateZ(-34px)" }}
-            />
-            <div
-              aria-hidden
-              className="absolute -inset-10 rounded-2xl bg-[#060607]"
-              style={{ transform: "translateZ(-46px)" }}
-            />
+        {/* Página dupla: retrato | fio | texto e config */}
+        <div className="mt-16 grid gap-16 sm:mt-24 lg:mt-32 lg:grid-cols-[minmax(0,5fr)_1px_minmax(0,6fr)] lg:gap-x-14 xl:gap-x-20">
+          {/* No desktop o retrato acompanha a leitura da coluna ao lado */}
+          <AboutFigure className="mx-auto w-full max-w-[30rem] lg:sticky lg:top-28 lg:max-w-none lg:self-start" />
 
-            {layers.map((layer, i) => {
-              const Icon = layer.icon
-              const on = i === active
-              const z = (layers.length - 1 - i) * GAP
-              return (
-                <motion.button
-                  key={layer.label}
-                  type="button"
-                  onClick={() => onFocus(i)}
-                  aria-pressed={on}
-                  aria-label={layer.label}
-                  initial={false}
-                  animate={{ z: z + (on ? 16 : 0) }}
-                  transition={{ type: "spring", stiffness: 160, damping: 20 }}
-                  className="absolute inset-0 [transform-style:preserve-3d]"
+          <div aria-hidden className="bg-ink/10 hidden lg:block" />
+
+          <div className="min-w-0">
+            <div className="max-w-[38rem]">
+              {/* Capitular com o resto da 1ª palavra em versal: "S" + "OU" se
+                  leem como "SOU" (e não como "S ou") */}
+              <p className="text-ink text-[1.3rem] leading-[1.45] tracking-[-0.012em] text-pretty first-letter:mr-[0.06em] first-letter:font-[family-name:var(--font-archivo)] first-letter:font-extrabold first-letter:[font-stretch:125%] first-letter:[-webkit-initial-letter:3] first-letter:[initial-letter:3] sm:text-[1.6rem]">
+                {"S"}
+                <span className="text-[0.8em] font-medium tracking-[0.05em] uppercase">
+                  ou {site.name},
+                </span>{" "}
+                <Ref link="cargo" active={link} onLink={setLink} after=".">
+                  desenvolvedor full stack
+                </Ref>{" "}
+                Trabalho do front ao back, sozinho ou junto do time:{" "}
+                <Ref link="formatos" active={link} onLink={setLink} after=".">
+                  em agência, como freela ou dentro de produto
+                </Ref>
+              </p>
+              <p className="text-ink-muted mt-7 text-base leading-relaxed text-pretty sm:text-lg">
+                No momento, estou{" "}
+                <Ref link="status" active={link} onLink={setLink} after=".">
+                  <strong className="text-ink font-medium">
+                    disponível para projetos e também para vagas
+                  </strong>
+                </Ref>{" "}
+                Minha formação é em{" "}
+                <Ref link="formacao" active={link} onLink={setLink} after=",">
+                  Análise e Desenvolvimento de Sistemas
+                </Ref>{" "}
+                e fiz o{" "}
+                <Ref
+                  link="curso"
+                  active={link}
+                  onLink={setLink}
+                  after="."
+                  end={
+                    // Fim de matéria, como em revista (preso à última chamada)
+                    <span
+                      aria-hidden
+                      className="bg-red-primary ml-2 inline-block size-[0.55em] align-baseline"
+                    />
+                  }
                 >
-                  {/* Espessura: placa de baixo, mais escura */}
-                  <span
-                    aria-hidden
-                    className={cn(
-                      "absolute inset-0 rounded-xl transition-colors duration-500",
-                      on ? "bg-[#5c0408]" : "bg-[#070708]",
-                    )}
-                    style={{ transform: "translateZ(-18px)" }}
-                  />
-                  {/* Topo */}
-                  <span
-                    className={cn(
-                      "absolute inset-0 flex items-center gap-4 rounded-xl border px-6 transition-[background,border-color,box-shadow] duration-500",
-                      on
-                        ? "border-red-light/80 bg-[linear-gradient(135deg,#ff343b,#c1070f)] shadow-[0_0_40px_-4px_rgb(229_9_20/0.9)]"
-                        : "border-white/10 bg-[linear-gradient(135deg,#1d1d21,#111114)] shadow-[0_0_20px_-10px_rgb(0_0_0/1)]",
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        "flex size-11 shrink-0 items-center justify-center rounded-lg border transition-colors duration-500",
-                        on
-                          ? "border-white/40 text-white"
-                          : "border-white/15 text-foreground/85",
-                      )}
-                    >
-                      <Icon className="size-5" />
-                    </span>
-                    <span
-                      className={cn(
-                        "text-base font-medium whitespace-nowrap transition-colors duration-500",
-                        on ? "text-white" : "text-foreground/85",
-                      )}
-                    >
-                      {layer.label}
-                    </span>
-                  </span>
-                </motion.button>
-              )
-            })}
+                  curso de arquitetura de multiagentes da StartSe
+                </Ref>
+              </p>
+            </div>
+
+            <AboutConfig active={link} onLink={setLink} className="mt-14 lg:mt-16" />
+
+            {/* No celular, as duas pílulas lado a lado (a partir de 360px), cada
+                uma com metade da largura: alvo fácil para o polegar sem empilhar */}
+            <div className="mt-10 grid gap-2 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
+              <ButtonLink
+                href={site.linkedin}
+                variant="dark"
+                size="lg"
+                className="min-w-0 justify-between pl-5 sm:pl-7"
+              >
+                LinkedIn
+              </ButtonLink>
+              <ButtonLink
+                href={site.github}
+                variant="ink-ghost"
+                size="lg"
+                className="min-w-0 justify-between pl-5 sm:pl-7"
+              >
+                GitHub
+              </ButtonLink>
+              {site.resume && (
+                <ButtonLink
+                  href={site.resume}
+                  variant="ink-ghost"
+                  size="lg"
+                  icon="none"
+                  external={false}
+                  download
+                  className="justify-center min-[360px]:col-span-2"
+                >
+                  Baixar currículo
+                </ButtonLink>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Ciclo: setas tracejadas com o fluxo correndo e um pulso de luz */}
-        <svg
-          aria-hidden
-          viewBox="0 0 600 720"
-          className="pointer-events-none absolute inset-0 size-full overflow-visible"
-        >
-          <defs>
-            <marker
-              id="about-arrow"
-              viewBox="0 0 10 10"
-              refX="6"
-              refY="5"
-              markerWidth="8"
-              markerHeight="8"
-              orient="auto-start-reverse"
-            >
-              <path d="M0 0 L10 5 L0 10 z" fill="#FF343B" />
-            </marker>
-          </defs>
-          {/* Tracejado estático; os pontinhos acendem em vermelho, um a um,
-            seguindo o sentido do ciclo (esquerda desce, direita sobe) */}
-          {CYCLE_PATHS.map((d, i) => (
-            <g key={i}>
-              {/* Cometa que percorre o arco: várias janelas com a mesma ponta e
-                comprimentos diferentes se somam. A ponta fica forte e a cauda
-                vai enfraquecendo. Entra e sai pelas pontas do arco, então o
-                loop emenda sem salto. */}
-              <mask id={`about-fill-${i}`} maskUnits="userSpaceOnUse">
-                {TAIL_LAYERS.map((len) => {
-                  // Posição da ponta: 0 (início do arco) → 1 + TRAIL (cauda saiu)
-                  const at = (head: number) => len - head
-                  return (
-                    <motion.path
-                      key={len}
-                      d={d}
-                      pathLength={1}
-                      fill="none"
-                      stroke="white"
-                      strokeOpacity={reduceMotion ? 1 : TAIL_OPACITY}
-                      strokeWidth="14"
-                      strokeDasharray={`${len} 3`}
-                      initial={{ strokeDashoffset: reduceMotion ? 0 : at(0) }}
-                      animate={
-                        reduceMotion
-                          ? undefined
-                          : {
-                              strokeDashoffset:
-                                i === 0
-                                  ? [at(0), at(1 + TRAIL), at(1 + TRAIL)]
-                                  : [at(0), at(0), at(1 + TRAIL)],
-                            }
-                      }
-                      transition={{
-                        duration: CYCLE_FILL,
-                        times: [0, 0.5, 1],
-                        ease:
-                          i === 0
-                            ? ["easeInOut", "linear"]
-                            : ["linear", "easeInOut"],
-                        repeat: Infinity,
-                      }}
-                    />
-                  )
-                })}
-              </mask>
-              <path
-                d={d}
-                fill="none"
-                stroke="#F5F5F5"
-                strokeOpacity="0.35"
-                strokeWidth="1.4"
-                strokeDasharray="3 8"
-                markerEnd="url(#about-arrow)"
-              />
-              <path
-                d={d}
-                fill="none"
-                stroke="#FF343B"
-                strokeWidth="2"
-                strokeDasharray="3 8"
-                mask={`url(#about-fill-${i})`}
-                className="drop-shadow-[0_0_4px_#FF343B]"
-              />
-            </g>
-          ))}
-        </svg>
-        {/* Anotações presas às pontas dos arcos */}
-        <span className="font-hand text-foreground/90 absolute top-[318px] left-[-6px] -rotate-12 text-[40px] leading-none">
-          Da ideia
-        </span>
-        <span className="font-hand text-foreground/90 absolute top-[598px] left-[352px] -rotate-12 text-[40px] leading-none">
-          ao resultado
-        </span>
+        {/* Rodapé da página: espelha o cabeçalho e "vira a folha" para o contato */}
+        <div className="border-ink/15 mt-24 flex items-center justify-between gap-6 border-t pt-5 sm:mt-28 lg:mt-32">
+          <p className="text-label text-ink-muted">
+            {site.url.replace(/^https?:\/\//, "")}
+          </p>
+          <NextPage />
+        </div>
       </div>
-    </div>
+    </section>
   )
 }

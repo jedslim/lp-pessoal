@@ -1,0 +1,2394 @@
+{
+  "version": 3,
+  "generated_by": "3d/export_glb.py + 3d/validate_glb.py + 3d/export_web.mjs (fonte: 3d/keycaps.py)",
+  "units": {
+    "length": "metro (tamanho real: tecla 1u = 17.8 mm de base). Sugestao: escale o grupo por 100 (1 unidade = 1 cm) ou por 1/0.018 (tecla = 1 unidade).",
+    "axes": "glTF Y-up: +Y = topo da tecla, +Z = frente da tecla (lado de quem digita), +X = direita. Todos os nos de keys.glb tem transform identidade.",
+    "origin_keys": "centro da caixa (bbox) de casca + legenda de cada tecla",
+    "origin_deploy": "centro do topo da placa (y = 0). deploy_key fica em key_up_translation (estado solto).",
+    "boxes": "bbox em metros, espaco local do no (min/max/size)",
+    "fallback_boxes": "% da imagem (0-100), origem no canto superior esquerdo"
+  },
+  "loader": {
+    "draco_decoder_path": "/draco/",
+    "example": "const d = new DRACOLoader().setDecoderPath('/draco/'); new GLTFLoader().setDRACOLoader(d).load('/3d/keys.glb', g => g.scene.getObjectByName('key_cmd'))",
+    "drei": "useGLTF('/3d/keys.glb', '/draco/')",
+    "note": "Cada tecla e um Mesh (1 primitiva) com a legenda como Mesh filho; deploy_base tem 4 primitivas, entao vira um Group com 4 Meshes filhos."
+  },
+  "render": {
+    "toneMapping": "THREE.NeutralToneMapping (= 'Khronos PBR Neutral' dos renders)",
+    "toneMappingExposure": 1,
+    "outputColorSpace": "SRGBColorSpace",
+    "background": "#050506",
+    "environment": "lightformers abaixo, sem HDRI. Validado em three.js 0.186 (3d/webcheck): bate com o Cycles."
+  },
+  "files": {
+    "keys.glb": {
+      "file": "/3d/keys.glb",
+      "bytes": 151584,
+      "extensions": [
+        "KHR_draco_mesh_compression",
+        "KHR_materials_clearcoat"
+      ]
+    },
+    "deploy.glb": {
+      "file": "/3d/deploy.glb",
+      "bytes": 81556,
+      "extensions": [
+        "KHR_draco_mesh_compression",
+        "KHR_materials_clearcoat"
+      ]
+    },
+    "key-cmd.webp": {
+      "file": "/3d/key-cmd.webp",
+      "width": 720,
+      "height": 686,
+      "bytes": 25234,
+      "crop_of_render": {
+        "x": 6.74,
+        "y": 8.75,
+        "w": 86.53,
+        "h": 82.5
+      }
+    },
+    "key-k.webp": {
+      "file": "/3d/key-k.webp",
+      "width": 720,
+      "height": 708,
+      "bytes": 24290,
+      "crop_of_render": {
+        "x": 6.74,
+        "y": 7.43,
+        "w": 86.53,
+        "h": 85.14
+      }
+    },
+    "key-brackets.webp": {
+      "file": "/3d/key-brackets.webp",
+      "width": 693,
+      "height": 720,
+      "bytes": 21040,
+      "crop_of_render": {
+        "x": 8.33,
+        "y": 6.74,
+        "w": 83.33,
+        "h": 86.53
+      }
+    },
+    "key-slash.webp": {
+      "file": "/3d/key-slash.webp",
+      "width": 720,
+      "height": 708,
+      "bytes": 22790,
+      "crop_of_render": {
+        "x": 6.74,
+        "y": 7.43,
+        "w": 86.53,
+        "h": 85.14
+      }
+    },
+    "key-enter.webp": {
+      "file": "/3d/key-enter.webp",
+      "width": 720,
+      "height": 703,
+      "bytes": 26840,
+      "crop_of_render": {
+        "x": 6.74,
+        "y": 7.78,
+        "w": 86.53,
+        "h": 84.44
+      }
+    },
+    "key-deploy-up.webp": {
+      "file": "/3d/key-deploy-up.webp",
+      "width": 1400,
+      "height": 1000,
+      "bytes": 45966,
+      "content": {
+        "x": 7.93,
+        "y": 12,
+        "w": 84.14,
+        "h": 76
+      }
+    },
+    "key-deploy-down.webp": {
+      "file": "/3d/key-deploy-down.webp",
+      "width": 1400,
+      "height": 1000,
+      "bytes": 45824,
+      "content": {
+        "x": 7.93,
+        "y": 17.9,
+        "w": 84.14,
+        "h": 70.1
+      }
+    },
+    "cursor.glb": {
+      "file": "/3d/cursor.glb",
+      "bytes": 26192,
+      "extensions": [
+        "KHR_draco_mesh_compression",
+        "KHR_materials_clearcoat"
+      ]
+    },
+    "cursor-fallback.png": {
+      "file": "/3d/cursor-fallback.png",
+      "width": 96,
+      "height": 96,
+      "bytes": 10091,
+      "hotspot": [
+        29,
+        4
+      ],
+      "hotspot_exact": [
+        29.56,
+        4.67
+      ]
+    },
+    "cursor-fallback@2x.png": {
+      "file": "/3d/cursor-fallback@2x.png",
+      "width": 192,
+      "height": 192,
+      "bytes": 28467,
+      "hotspot": [
+        58,
+        8
+      ],
+      "hotspot_exact": [
+        59.12,
+        9.34
+      ]
+    },
+    "cursor-glass.glb": {
+      "file": "/3d/cursor-glass.glb",
+      "bytes": 20352,
+      "extensions": [
+        "KHR_draco_mesh_compression",
+        "KHR_materials_clearcoat",
+        "KHR_materials_transmission"
+      ]
+    },
+    "cursor-glass.png": {
+      "file": "/3d/cursor-glass.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 138138,
+      "hotspot": [
+        82,
+        40
+      ],
+      "hotspot_exact": [
+        84.54,
+        46.07
+      ],
+      "center": [
+        232.9,
+        242.77
+      ]
+    },
+    "cursor-glass@2x.png": {
+      "file": "/3d/cursor-glass@2x.png",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 413164,
+      "hotspot": [
+        165,
+        80
+      ],
+      "hotspot_exact": [
+        169.07,
+        92.13
+      ],
+      "center": [
+        465.79,
+        485.55
+      ]
+    }
+  },
+  "keys": {
+    "file": "/3d/keys.glb",
+    "nodes": {
+      "key_cmd": {
+        "legend": "⌘",
+        "color": "graphite",
+        "material": "pbt_graphite",
+        "children": {
+          "key_cmd_legend": {
+            "material": "legend_white",
+            "tris": 7174,
+            "bbox": {
+              "min": [
+                -0.0033,
+                0.003754,
+                -0.00378
+              ],
+              "max": [
+                0.0033,
+                0.004317,
+                0.00282
+              ],
+              "size": [
+                0.0066,
+                0.000563,
+                0.0066
+              ]
+            }
+          }
+        },
+        "tris": 11040,
+        "tris_total": 18214,
+        "bbox": {
+          "min": [
+            -0.008888,
+            -0.004816,
+            -0.008919
+          ],
+          "max": [
+            0.008888,
+            0.004816,
+            0.008919
+          ],
+          "size": [
+            0.017776,
+            0.009632,
+            0.017838
+          ]
+        },
+        "hero_pose": {
+          "quaternion_xyzw": [
+            0.160485,
+            0.268948,
+            0.064161,
+            0.94752
+          ],
+          "blender_euler_xyz_deg": [
+            16,
+            -12,
+            30
+          ]
+        },
+        "fallback": {
+          "file": "/3d/key-cmd.webp",
+          "width": 720,
+          "height": 686,
+          "bytes": 25234,
+          "crop_of_render": {
+            "x": 6.74,
+            "y": 8.75,
+            "w": 86.53,
+            "h": 82.5
+          }
+        }
+      },
+      "key_k": {
+        "legend": "K",
+        "color": "graphite",
+        "material": "pbt_graphite",
+        "children": {
+          "key_k_legend": {
+            "material": "legend_white",
+            "tris": 537,
+            "bbox": {
+              "min": [
+                -0.003423,
+                0.003788,
+                -0.00328
+              ],
+              "max": [
+                0.003423,
+                0.00437,
+                0.00232
+              ],
+              "size": [
+                0.006845,
+                0.000582,
+                0.0056
+              ]
+            }
+          }
+        },
+        "tris": 11040,
+        "tris_total": 11577,
+        "bbox": {
+          "min": [
+            -0.008888,
+            -0.004816,
+            -0.008919
+          ],
+          "max": [
+            0.008888,
+            0.004816,
+            0.008919
+          ],
+          "size": [
+            0.017776,
+            0.009632,
+            0.017838
+          ]
+        },
+        "hero_pose": {
+          "quaternion_xyzw": [
+            0.191308,
+            -0.139893,
+            0.009586,
+            0.971463
+          ],
+          "blender_euler_xyz_deg": [
+            22,
+            2,
+            -16
+          ]
+        },
+        "fallback": {
+          "file": "/3d/key-k.webp",
+          "width": 720,
+          "height": 708,
+          "bytes": 24290,
+          "crop_of_render": {
+            "x": 6.74,
+            "y": 7.43,
+            "w": 86.53,
+            "h": 85.14
+          }
+        }
+      },
+      "key_brackets": {
+        "legend": "{ }",
+        "color": "graphite",
+        "material": "pbt_graphite",
+        "children": {
+          "key_brackets_legend": {
+            "material": "legend_white",
+            "tris": 2650,
+            "bbox": {
+              "min": [
+                -0.003669,
+                0.00375,
+                -0.00383
+              ],
+              "max": [
+                0.003669,
+                0.004301,
+                0.00297
+              ],
+              "size": [
+                0.007338,
+                0.000552,
+                0.0068
+              ]
+            }
+          }
+        },
+        "tris": 11040,
+        "tris_total": 13690,
+        "bbox": {
+          "min": [
+            -0.008888,
+            -0.004816,
+            -0.008919
+          ],
+          "max": [
+            0.008888,
+            0.004816,
+            0.008919
+          ],
+          "size": [
+            0.017776,
+            0.009632,
+            0.017838
+          ]
+        },
+        "hero_pose": {
+          "quaternion_xyzw": [
+            0.228899,
+            0.096872,
+            -0.113307,
+            0.961968
+          ],
+          "blender_euler_xyz_deg": [
+            28,
+            10,
+            14
+          ]
+        },
+        "fallback": {
+          "file": "/3d/key-brackets.webp",
+          "width": 693,
+          "height": 720,
+          "bytes": 21040,
+          "crop_of_render": {
+            "x": 8.33,
+            "y": 6.74,
+            "w": 83.33,
+            "h": 86.53
+          }
+        }
+      },
+      "key_slash": {
+        "legend": "/",
+        "color": "graphite",
+        "material": "pbt_graphite",
+        "children": {
+          "key_slash_legend": {
+            "material": "legend_white",
+            "tris": 120,
+            "bbox": {
+              "min": [
+                -0.001375,
+                0.003696,
+                -0.00393
+              ],
+              "max": [
+                0.001375,
+                0.00417,
+                0.00307
+              ],
+              "size": [
+                0.00275,
+                0.000474,
+                0.007
+              ]
+            }
+          }
+        },
+        "tris": 11040,
+        "tris_total": 11160,
+        "bbox": {
+          "min": [
+            -0.008888,
+            -0.004816,
+            -0.008919
+          ],
+          "max": [
+            0.008888,
+            0.004816,
+            0.008919
+          ],
+          "size": [
+            0.017776,
+            0.009632,
+            0.017838
+          ]
+        },
+        "hero_pose": {
+          "quaternion_xyzw": [
+            0.119996,
+            -0.119996,
+            0.138734,
+            0.975682
+          ],
+          "blender_euler_xyz_deg": [
+            16,
+            -14,
+            -16
+          ]
+        },
+        "fallback": {
+          "file": "/3d/key-slash.webp",
+          "width": 720,
+          "height": 708,
+          "bytes": 22790,
+          "crop_of_render": {
+            "x": 6.74,
+            "y": 7.43,
+            "w": 86.53,
+            "h": 85.14
+          }
+        }
+      },
+      "key_enter": {
+        "legend": "↵",
+        "color": "red",
+        "material": "abs_red",
+        "children": {
+          "key_enter_legend": {
+            "material": "legend_white",
+            "tris": 187,
+            "bbox": {
+              "min": [
+                -0.002078,
+                0.003747,
+                -0.00318
+              ],
+              "max": [
+                0.002078,
+                0.004187,
+                0.00222
+              ],
+              "size": [
+                0.004157,
+                0.00044,
+                0.0054
+              ]
+            }
+          }
+        },
+        "tris": 11040,
+        "tris_total": 11227,
+        "bbox": {
+          "min": [
+            -0.008888,
+            -0.004816,
+            -0.008919
+          ],
+          "max": [
+            0.008888,
+            0.004816,
+            0.008919
+          ],
+          "size": [
+            0.017776,
+            0.009632,
+            0.017838
+          ]
+        },
+        "hero_pose": {
+          "quaternion_xyzw": [
+            0.221921,
+            -0.325643,
+            -0.07154,
+            0.916291
+          ],
+          "blender_euler_xyz_deg": [
+            22,
+            16,
+            -36
+          ]
+        },
+        "fallback": {
+          "file": "/3d/key-enter.webp",
+          "width": 720,
+          "height": 703,
+          "bytes": 26840,
+          "crop_of_render": {
+            "x": 6.74,
+            "y": 7.78,
+            "w": 86.53,
+            "h": 84.44
+          }
+        }
+      }
+    },
+    "press": {
+      "travel_m": 0.0036,
+      "axis": "-Y local da tecla",
+      "note": "mesmo curso da deploy (3.6 mm); para o atalho Cmd/Ctrl+K afundar key_cmd e key_k"
+    },
+    "materials": {
+      "legend_white": {
+        "emissiveFactor": [
+          0.10000000149011612,
+          0.09700000430643563,
+          0.0950000002235174
+        ],
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.8549926280975342,
+            0.8468732237815857,
+            0.8227857351303101,
+            1
+          ],
+          "metallicFactor": 0,
+          "roughnessFactor": 0.41999998688697815
+        }
+      },
+      "pbt_graphite": {
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.01032982300966978,
+            0.01032982300966978,
+            0.012286487966775894,
+            1
+          ],
+          "metallicFactor": 0,
+          "roughnessFactor": 0.5
+        }
+      },
+      "abs_red": {
+        "extensions": {
+          "KHR_materials_clearcoat": {
+            "clearcoatFactor": 0.3499999940395355,
+            "clearcoatRoughnessFactor": 0.14000000059604645
+          }
+        },
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.7835378050804138,
+            0.0027317428030073643,
+            0.006995410192757845,
+            1
+          ],
+          "metallicFactor": 0,
+          "roughnessFactor": 0.2800000011920929
+        }
+      }
+    },
+    "hero": {
+      "camera": {
+        "elevation_deg": 26,
+        "azimuth_deg": 0,
+        "vertical_fov_deg": 20.41,
+        "note": "renders de fallback: camera a 26 graus acima, de frente (+Z), lente 100 mm"
+      },
+      "pose_note": "hero_pose = rotacao de cada tecla nos renders de fallback (aplique no no; quaternion three.js x,y,z,w).",
+      "lights": [
+        {
+          "role": "key",
+          "direction": [
+            -0.5201,
+            0.7431,
+            0.4211
+          ],
+          "distance_mm": 404,
+          "size_mm": [
+            260,
+            170
+          ],
+          "angular_size_deg": [
+            35.7,
+            23.78
+          ],
+          "color_linear": [
+            1,
+            0.97,
+            0.94
+          ],
+          "color_hex": "#fffcf8",
+          "lightformer": {
+            "position": [
+              -5.2015,
+              7.4307,
+              4.2107
+            ],
+            "scale": [
+              6.4399,
+              4.2107
+            ],
+            "intensity": 13.4071
+          },
+          "directional_intensity": 3.6356
+        },
+        {
+          "role": "top_strip",
+          "direction": [
+            0.0954,
+            0.8903,
+            -0.4452
+          ],
+          "distance_mm": 314,
+          "size_mm": [
+            320,
+            36
+          ],
+          "angular_size_deg": [
+            53.93,
+            6.55
+          ],
+          "color_linear": [
+            1,
+            1,
+            1
+          ],
+          "color_hex": "#ffffff",
+          "lightformer": {
+            "position": [
+              0.9539,
+              8.9035,
+              -4.4517
+            ],
+            "scale": [
+              10.1754,
+              1.1447
+            ],
+            "intensity": 9.4708
+          },
+          "directional_intensity": 1.1032
+        },
+        {
+          "role": "rim_red_right",
+          "direction": [
+            0.4059,
+            0.1249,
+            -0.9054
+          ],
+          "distance_mm": 320,
+          "size_mm": [
+            150,
+            46
+          ],
+          "angular_size_deg": [
+            26.36,
+            8.21
+          ],
+          "color_linear": [
+            1,
+            0.018,
+            0.03
+          ],
+          "color_hex": "#ff2430",
+          "lightformer": {
+            "position": [
+              4.0585,
+              1.2488,
+              -9.0537
+            ],
+            "scale": [
+              4.6829,
+              1.4361
+            ],
+            "intensity": 79.2592
+          },
+          "directional_intensity": 5.3303
+        },
+        {
+          "role": "rim_red_left",
+          "direction": [
+            -0.3161,
+            0.0316,
+            -0.9482
+          ],
+          "distance_mm": 316,
+          "size_mm": [
+            120,
+            40
+          ],
+          "angular_size_deg": [
+            21.48,
+            7.23
+          ],
+          "color_linear": [
+            1,
+            0.03,
+            0.04
+          ],
+          "color_hex": "#ff3038",
+          "lightformer": {
+            "position": [
+              -3.1607,
+              0.3161,
+              -9.4821
+            ],
+            "scale": [
+              3.7928,
+              1.2643
+            ],
+            "intensity": 52.2845
+          },
+          "directional_intensity": 2.5071
+        },
+        {
+          "role": "front_fill",
+          "direction": [
+            -0.2253,
+            0.1288,
+            0.9657
+          ],
+          "distance_mm": 311,
+          "size_mm": [
+            320,
+            140
+          ],
+          "angular_size_deg": [
+            54.5,
+            25.4
+          ],
+          "color_linear": [
+            1,
+            0.98,
+            0.96
+          ],
+          "color_hex": "#fffdfa",
+          "lightformer": {
+            "position": [
+              -2.2534,
+              1.2876,
+              9.6573
+            ],
+            "scale": [
+              10.3012,
+              4.5068
+            ],
+            "intensity": 4.7478
+          },
+          "directional_intensity": 2.2042
+        },
+        {
+          "role": "fill_cool",
+          "direction": [
+            0.7836,
+            0.0327,
+            0.6204
+          ],
+          "distance_mm": 306,
+          "size_mm": [
+            260,
+            260
+          ],
+          "angular_size_deg": [
+            46,
+            46
+          ],
+          "color_linear": [
+            0.62,
+            0.76,
+            1
+          ],
+          "color_hex": "#cee2ff",
+          "lightformer": {
+            "position": [
+              7.8363,
+              0.3265,
+              6.2037
+            ],
+            "scale": [
+              8.4893,
+              8.4893
+            ],
+            "intensity": 0.4352
+          },
+          "directional_intensity": 0.3136
+        },
+        {
+          "role": "under_kicker_red",
+          "direction": [
+            0.1274,
+            -0.7325,
+            -0.6688
+          ],
+          "distance_mm": 314,
+          "size_mm": [
+            200,
+            80
+          ],
+          "angular_size_deg": [
+            35.33,
+            14.52
+          ],
+          "color_linear": [
+            1,
+            0.03,
+            0.04
+          ],
+          "color_hex": "#ff3038",
+          "lightformer": {
+            "position": [
+              1.2739,
+              -7.3247,
+              -6.6878
+            ],
+            "scale": [
+              6.3693,
+              2.5477
+            ],
+            "intensity": 26.9306
+          },
+          "directional_intensity": 4.3701
+        }
+      ],
+      "light_summary": {
+        "key_light_direction": [
+          -0.5201,
+          0.7431,
+          0.4211
+        ],
+        "key_light": "softbox grande em cima/esquerda/frente, branco quente",
+        "rim_red_direction": [
+          0.4059,
+          0.1249,
+          -0.9054
+        ],
+        "rim_red": "faixa vermelha por tras/direita, rasante: so recorta a silhueta",
+        "rim_red_left_direction": [
+          -0.3161,
+          0.0316,
+          -0.9482
+        ],
+        "recipe": "<Environment resolution={256} frames={1}> com um <Lightformer form=rect> por item de lights (position, scale, intensity, color_hex, target=[0,0,0]); environmentIntensity 1; sem luz ambiente extra"
+      }
+    }
+  },
+  "deploy": {
+    "file": "/3d/deploy.glb",
+    "nodes": {
+      "deploy_base": {
+        "materials": [
+          "alu_anodized",
+          "alu_diamond_cut",
+          "switch_housing",
+          "stab_housing"
+        ],
+        "tris": 15888,
+        "bbox": {
+          "min": [
+            -0.0275,
+            -0.006,
+            -0.0175
+          ],
+          "max": [
+            0.0275,
+            0.005,
+            0.0175
+          ],
+          "size": [
+            0.055,
+            0.011,
+            0.035
+          ]
+        },
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "note": "placa usinada 55 x 35 x 6 mm + housing do switch (switch_housing) + 2 estabilizadores"
+      },
+      "deploy_key": {
+        "material": "abs_red",
+        "tris": 15920,
+        "bbox": {
+          "min": [
+            -0.018413,
+            -0.004863,
+            -0.008919
+          ],
+          "max": [
+            0.018413,
+            0.004863,
+            0.008919
+          ],
+          "size": [
+            0.036826,
+            0.009727,
+            0.017838
+          ]
+        },
+        "translation_up": [
+          0,
+          0.009263,
+          -0.00002
+        ],
+        "translation_down": [
+          0,
+          0.005663,
+          -0.00002
+        ],
+        "children": {
+          "deploy_key_legend": {
+            "material": "legend_deploy",
+            "tris": 5187,
+            "bbox": {
+              "min": [
+                -0.01149,
+                0.003781,
+                -0.002539
+              ],
+              "max": [
+                0.01149,
+                0.004468,
+                0.00172
+              ],
+              "size": [
+                0.022979,
+                0.000687,
+                0.004259
+              ]
+            }
+          }
+        }
+      },
+      "deploy_led": {
+        "material": "led_glow",
+        "tris": 3772,
+        "bbox": {
+          "min": [
+            -0.0272,
+            0.00005,
+            -0.0177
+          ],
+          "max": [
+            0.0272,
+            0.00005,
+            0.0177
+          ],
+          "size": [
+            0.0544,
+            0,
+            0.0354
+          ]
+        },
+        "note": "decal 0.05 mm acima da placa; COLOR_0.a = queda da luz (cheia sob a tecla, some ~9 mm fora da saia). Use material.blending = AdditiveBlending, depthWrite = false."
+      }
+    },
+    "travel": {
+      "meters": 0.0036,
+      "mm": 3.6,
+      "axis": "-Y (local do pai)",
+      "note": "anime deploy_key.position.y de translation_up[1] ate translation_up[1] - travel; a tecla nunca toca a placa (folga de 0.8 mm no fundo)"
+    },
+    "states": {
+      "up": {
+        "deploy_key.position.y": 0.009263,
+        "led_glow.emissiveIntensity": 0.12,
+        "legend_deploy.emissiveIntensity": 1,
+        "switch_housing.emissiveIntensity": 1
+      },
+      "down": {
+        "deploy_key.position.y": 0.005663,
+        "led_glow.emissiveIntensity": 1.1,
+        "legend_deploy.emissiveIntensity": 8,
+        "switch_housing.emissiveIntensity": 12
+      }
+    },
+    "point_light": {
+      "position_m": [
+        0,
+        0.0015,
+        0
+      ],
+      "color_linear": [
+        1,
+        0.035,
+        0.04
+      ],
+      "decay": 2,
+      "idle_cd": 0,
+      "pressed_cd": 0,
+      "note": "opcional. O decal ja faz o vazamento; uma PointLight forte cria hotspot especular na placa (o three.js nao sombreia). Se escalar a cena por s, multiplique a intensidade por s^2."
+    },
+    "materials": {
+      "alu_anodized": {
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.023153366521000862,
+            0.023153366521000862,
+            0.02955683507025242,
+            1
+          ],
+          "metallicFactor": 0.20000000298023224,
+          "roughnessFactor": 0.33000001311302185
+        }
+      },
+      "alu_diamond_cut": {
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.16202937066555023,
+            0.16202937066555023,
+            0.18116424977779388,
+            1
+          ],
+          "roughnessFactor": 0.2199999988079071
+        }
+      },
+      "switch_housing": {
+        "emissiveFactor": [
+          0.05000000074505806,
+          0.0014999999888241286,
+          0.0017500000335276128
+        ],
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.005181516520678997,
+            0.0027317428030073643,
+            0.0030352699104696512,
+            1
+          ],
+          "metallicFactor": 0,
+          "roughnessFactor": 0.2800000011920929
+        }
+      },
+      "stab_housing": {
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.0043914420530200005,
+            0.0043914420530200005,
+            0.005181516520678997,
+            1
+          ],
+          "metallicFactor": 0,
+          "roughnessFactor": 0.3199999928474426
+        }
+      },
+      "legend_deploy": {
+        "emissiveFactor": [
+          0.10000000149011612,
+          0.09200000303983691,
+          0.08800000083446502
+        ],
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.8549926280975342,
+            0.8468732237815857,
+            0.8227857351303101,
+            1
+          ],
+          "metallicFactor": 0,
+          "roughnessFactor": 0.41999998688697815
+        }
+      },
+      "abs_red": {
+        "extensions": {
+          "KHR_materials_clearcoat": {
+            "clearcoatFactor": 0.3499999940395355,
+            "clearcoatRoughnessFactor": 0.14000000059604645
+          }
+        },
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.7835378050804138,
+            0.0027317428030073643,
+            0.006995410192757845,
+            1
+          ],
+          "metallicFactor": 0,
+          "roughnessFactor": 0.2800000011920929
+        }
+      },
+      "led_glow": {
+        "alphaMode": "BLEND",
+        "emissiveFactor": [
+          1,
+          0.03500000014901161,
+          0.03999999910593033
+        ],
+        "pbrMetallicRoughness": {
+          "metallicFactor": 0
+        }
+      }
+    },
+    "fallback_camera": {
+      "position_m": [
+        0.0578,
+        0.0999,
+        0.1299
+      ],
+      "quaternion_xyzw": [
+        -0.2859826,
+        0.1988269,
+        0.0607875,
+        0.9354072
+      ],
+      "vertical_fov_deg": 17.2028,
+      "aspect": 1.4,
+      "view_offset": "camera.setViewOffset(W, H, shift[0]*max(W,H), -shift[1]*max(W,H), W, H)",
+      "shift": [
+        -0.005341,
+        -0.067785
+      ],
+      "note": "mesma camera dos WebP key-deploy-up/down: com ela o 3D sobrepoe o fallback pixel a pixel"
+    },
+    "fallback": {
+      "up": {
+        "file": "/3d/key-deploy-up.webp",
+        "width": 1400,
+        "height": 1000,
+        "bytes": 45966,
+        "content": {
+          "x": 7.93,
+          "y": 12,
+          "w": 84.14,
+          "h": 76
+        }
+      },
+      "down": {
+        "file": "/3d/key-deploy-down.webp",
+        "width": 1400,
+        "height": 1000,
+        "bytes": 45824,
+        "content": {
+          "x": 7.93,
+          "y": 17.9,
+          "w": 84.14,
+          "h": 70.1
+        }
+      }
+    },
+    "lights": [
+      {
+        "role": "key",
+        "direction": [
+          -0.517,
+          0.7418,
+          0.4271
+        ],
+        "distance_mm": 445,
+        "size_mm": [
+          300,
+          200
+        ],
+        "angular_size_deg": [
+          37.27,
+          25.34
+        ],
+        "color_linear": [
+          1,
+          0.97,
+          0.94
+        ],
+        "color_hex": "#fffcf8",
+        "lightformer": {
+          "position": [
+            -5.1702,
+            7.4181,
+            4.271
+          ],
+          "scale": [
+            6.7437,
+            4.4958
+          ],
+          "intensity": 12.7234
+        },
+        "directional_intensity": 3.8575
+      },
+      {
+        "role": "top_strip",
+        "direction": [
+          0.1152,
+          0.8642,
+          -0.4897
+        ],
+        "distance_mm": 347,
+        "size_mm": [
+          360,
+          40
+        ],
+        "angular_size_deg": [
+          54.82,
+          6.59
+        ],
+        "color_linear": [
+          1,
+          1,
+          1
+        ],
+        "color_hex": "#ffffff",
+        "lightformer": {
+          "position": [
+            1.1523,
+            8.6423,
+            -4.8973
+          ],
+          "scale": [
+            10.3707,
+            1.1523
+          ],
+          "intensity": 9.0885
+        },
+        "directional_intensity": 1.0861
+      },
+      {
+        "role": "rim_red_right",
+        "direction": [
+          0.4423,
+          0.1474,
+          -0.8847
+        ],
+        "distance_mm": 339,
+        "size_mm": [
+          170,
+          50
+        ],
+        "angular_size_deg": [
+          28.14,
+          8.43
+        ],
+        "color_linear": [
+          1,
+          0.018,
+          0.03
+        ],
+        "color_hex": "#ff2430",
+        "lightformer": {
+          "position": [
+            4.4233,
+            1.4744,
+            -8.8465
+          ],
+          "scale": [
+            5.013,
+            1.4744
+          ],
+          "intensity": 79.4277
+        },
+        "directional_intensity": 5.8707
+      },
+      {
+        "role": "rim_red_left",
+        "direction": [
+          -0.5253,
+          0.0876,
+          -0.8464
+        ],
+        "distance_mm": 343,
+        "size_mm": [
+          140,
+          44
+        ],
+        "angular_size_deg": [
+          23.09,
+          7.35
+        ],
+        "color_linear": [
+          1,
+          0.03,
+          0.04
+        ],
+        "color_hex": "#ff3038",
+        "lightformer": {
+          "position": [
+            -5.2534,
+            0.8756,
+            -8.4638
+          ],
+          "scale": [
+            4.086,
+            1.2842
+          ],
+          "intensity": 52.8008
+        },
+        "directional_intensity": 2.7705
+      },
+      {
+        "role": "fill_cool",
+        "direction": [
+          0.7621,
+          0.0586,
+          0.6448
+        ],
+        "distance_mm": 341,
+        "size_mm": [
+          300,
+          300
+        ],
+        "angular_size_deg": [
+          47.47,
+          47.47
+        ],
+        "color_linear": [
+          0.62,
+          0.76,
+          1
+        ],
+        "color_hex": "#cee2ff",
+        "lightformer": {
+          "position": [
+            7.6207,
+            0.5862,
+            6.4483
+          ],
+          "scale": [
+            8.7932,
+            8.7932
+          ],
+          "intensity": 0.4035
+        },
+        "directional_intensity": 0.312
+      }
+    ],
+    "light_summary": {
+      "key_light_direction": [
+        -0.517,
+        0.7418,
+        0.4271
+      ],
+      "key_light": "softbox grande em cima/esquerda/frente, branco quente",
+      "rim_red_direction": [
+        0.4423,
+        0.1474,
+        -0.8847
+      ],
+      "rim_red": "faixa vermelha por tras/direita, rasante: so recorta a silhueta",
+      "rim_red_left_direction": [
+        -0.5253,
+        0.0876,
+        -0.8464
+      ],
+      "recipe": "<Environment resolution={256} frames={1}> com um <Lightformer form=rect> por item de lights (position, scale, intensity, color_hex, target=[0,0,0]); environmentIntensity 1; sem luz ambiente extra"
+    }
+  },
+  "validation": {
+    "checks": [
+      "OK   key_cmd na raiz",
+      "OK   key_cmd_legend filho de key_cmd",
+      "OK   key_cmd 18214 tris (<= 20k)",
+      "OK   key_cmd com transform identidade",
+      "OK   key_k na raiz",
+      "OK   key_k_legend filho de key_k",
+      "OK   key_k 11577 tris (<= 20k)",
+      "OK   key_k com transform identidade",
+      "OK   key_brackets na raiz",
+      "OK   key_brackets_legend filho de key_brackets",
+      "OK   key_brackets 13690 tris (<= 20k)",
+      "OK   key_brackets com transform identidade",
+      "OK   key_slash na raiz",
+      "OK   key_slash_legend filho de key_slash",
+      "OK   key_slash 11160 tris (<= 20k)",
+      "OK   key_slash com transform identidade",
+      "OK   key_enter na raiz",
+      "OK   key_enter_legend filho de key_enter",
+      "OK   key_enter 11227 tris (<= 20k)",
+      "OK   key_enter com transform identidade",
+      "OK   deploy_base presente",
+      "OK   deploy_key presente",
+      "OK   deploy_key_legend presente",
+      "OK   deploy_led presente",
+      "OK   deploy_key_legend filho de deploy_key",
+      "OK   deploy_led com COLOR_0 (alpha da queda)",
+      "OK   keys.glb com Draco",
+      "OK   keys.glb 148.0 KB",
+      "OK   deploy.glb com Draco",
+      "OK   deploy.glb 79.6 KB"
+    ],
+    "three_js": {
+      "cmd": {
+        "loadMs": 44,
+        "drawCalls": 2,
+        "triangles": 18214
+      },
+      "k": {
+        "loadMs": 54,
+        "drawCalls": 2,
+        "triangles": 11577
+      },
+      "brackets": {
+        "loadMs": 54,
+        "drawCalls": 2,
+        "triangles": 13690
+      },
+      "slash": {
+        "loadMs": 45,
+        "drawCalls": 2,
+        "triangles": 11160
+      },
+      "enter": {
+        "loadMs": 45,
+        "drawCalls": 2,
+        "triangles": 11227
+      },
+      "deploy_up": {
+        "loadMs": 38,
+        "drawCalls": 7,
+        "triangles": 40767
+      },
+      "deploy_down": {
+        "loadMs": 51,
+        "drawCalls": 7,
+        "triangles": 40767
+      }
+    },
+    "lod": {
+      "nf": 10,
+      "nw": 10,
+      "nb": 4,
+      "niw": 4,
+      "nc": 4,
+      "nsx1": 16,
+      "nsx2": 34,
+      "nsy": 12,
+      "ncr": 12,
+      "K": 10,
+      "Kc": 4,
+      "text_res": 14,
+      "legend_sub_mm": 0.7,
+      "legend_eps_mm": 0.045,
+      "stem_res": 28
+    }
+  },
+  "cursor": {
+    "file": "/3d/cursor.glb",
+    "bytes": 26192,
+    "extensions": [
+      "KHR_draco_mesh_compression",
+      "KHR_materials_clearcoat"
+    ],
+    "generated_by": "3d/cursor.py (--mode build / --mode validate) + 3d/cursor_web.mjs; rode 3d/build_cursor.ps1",
+    "nodes": {
+      "cursor": {
+        "type": "Group (sem malha)",
+        "children": [
+          "cursor_body",
+          "cursor_rim"
+        ],
+        "transform": "identidade",
+        "note": "mova/gire/escale ESTE no. A origem dele (e de todos os filhos) e o hotspot."
+      },
+      "cursor_body": {
+        "material": "pbt_graphite",
+        "tris": 6836,
+        "bbox": {
+          "min": [
+            0.01329,
+            -0.94462,
+            -0.12408
+          ],
+          "max": [
+            0.52612,
+            -0.04664,
+            0.14869
+          ],
+          "size": [
+            0.51283,
+            0.89798,
+            0.27277
+          ]
+        },
+        "note": "corpo de PBT grafite com fillet grande e frente abaulada; anima position.z (clique / hover)"
+      },
+      "cursor_rim": {
+        "material": "abs_red",
+        "tris": 2304,
+        "bbox": {
+          "min": [
+            -0.03798,
+            -0.99561,
+            -0.06153
+          ],
+          "max": [
+            0.57707,
+            0.00439,
+            0.06153
+          ],
+          "size": [
+            0.61506,
+            1,
+            0.12306
+          ]
+        },
+        "children": [
+          "cursor_core"
+        ],
+        "note": "aro de ABS vermelho com clearcoat, 0.051 para fora do corpo: e o contorno vermelho do ponteiro"
+      },
+      "cursor_core": {
+        "material": "cursor_led",
+        "tris": 256,
+        "bbox": {
+          "min": [
+            -0.00107,
+            -0.9589,
+            -0.06276
+          ],
+          "max": [
+            0.54039,
+            -0.03235,
+            0.06276
+          ],
+          "size": [
+            0.54146,
+            0.92655,
+            0.12552
+          ]
+        },
+        "note": "filete de LED sobre o aro, colado no corpo (frente e verso). A parte interna fica escondida sob o corpo e aparece quando ele afunda: o brilho abre no clique. O GLB vem com emissiveIntensity 1 (aceso): aplique states.idle ao carregar."
+      }
+    },
+    "tris_total": 9396,
+    "hotspot": {
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "node": "cursor",
+      "definition": "meio do arredondamento da ponta no contorno externo do aro, no plano medio (z = 0). E o ponto da silhueta mais avancado na direcao da ponta.",
+      "usage": "cursor.position = ponto do mouse projetado no plano z = 0 da cena do cursor. Nenhum offset necessario.",
+      "tip_direction": [
+        -0.3827,
+        0.9239,
+        0
+      ],
+      "tip_angle_deg": 45
+    },
+    "orientation": {
+      "axes": "glTF Y-up: +Y = cima, +X = direita, +Z = frente (a face abaulada olha para +Z).",
+      "view": "camera em +Z olhando para -Z, up = +Y: a seta aparece como o ponteiro do sistema (ponta em cima a esquerda, borda esquerda vertical, cauda para baixo/direita). Sem rotacao no no 'cursor'.",
+      "rest_pose": {
+        "rotation_deg_xyz": [
+          -6,
+          -14,
+          0
+        ],
+        "quaternion_xyzw": [
+          -0.051946,
+          -0.121702,
+          0.006378,
+          0.991186
+        ],
+        "note": "pose de repouso sugerida (mostra a espessura). Euler three.js ordem XYZ, graus."
+      },
+      "hero_3q": {
+        "rotation_deg_xyz": [
+          -16,
+          -34,
+          -4
+        ],
+        "quaternion_xyzw": [
+          -0.122907,
+          -0.293995,
+          0.007616,
+          0.947841
+        ]
+      }
+    },
+    "scale": {
+      "height": 1,
+      "width": 0.61505,
+      "thickness_max": 0.27277,
+      "bbox": {
+        "min": [
+          -0.03798,
+          -0.99561,
+          -0.12408
+        ],
+        "max": [
+          0.57707,
+          0.00439,
+          0.14869
+        ],
+        "size": [
+          0.61505,
+          1,
+          0.27277
+        ]
+      },
+      "unit": "1 unidade = altura total da seta (da ponta ao fim da cauda). O hotspot fica 0.0044 abaixo do topo da caixa.",
+      "screen": "camera ortografica com 1 unidade = 1 px: cursor.scale.setScalar(alturaEmPx). Perspectiva: escala = alturaEmPx * (2 * dist * tan(fov/2) / alturaDoCanvasEmPx).",
+      "parts": {
+        "body_edge_thickness": 0.21535,
+        "rim_width": 0.05127,
+        "rim_thickness": 0.12306,
+        "body_bevel_xy": 0.04615,
+        "body_bevel_z": 0.05127,
+        "dome_front": 0.04102,
+        "dome_back": 0.01641
+      }
+    },
+    "materials": {
+      "pbt_graphite": {
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.01032982300966978,
+            0.01032982300966978,
+            0.012286487966775894,
+            1
+          ],
+          "metallicFactor": 0,
+          "roughnessFactor": 0.5
+        }
+      },
+      "cursor_led": {
+        "emissiveFactor": [
+          1,
+          0.03500000014901161,
+          0.03999999910593033
+        ],
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.006048833020031452,
+            0.002428215928375721,
+            0.0027317428030073643,
+            1
+          ],
+          "metallicFactor": 0,
+          "roughnessFactor": 0.6200000047683716
+        }
+      },
+      "abs_red": {
+        "extensions": {
+          "KHR_materials_clearcoat": {
+            "clearcoatFactor": 0.3499999940395355,
+            "clearcoatRoughnessFactor": 0.14000000059604645
+          }
+        },
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            0.7835378050804138,
+            0.0027317428030073643,
+            0.006995410192757845,
+            1
+          ],
+          "metallicFactor": 0,
+          "roughnessFactor": 0.2800000011920929
+        }
+      }
+    },
+    "states": {
+      "idle": {
+        "cursor_body.position.z": 0,
+        "cursor_led.emissiveIntensity": 0.06
+      },
+      "hover": {
+        "cursor_body.position.z": 0.02051,
+        "cursor_led.emissiveIntensity": 2,
+        "note": "sobre link/botao: o corpo sobe e o filete acende"
+      },
+      "down": {
+        "cursor_body.position.z": -0.03589,
+        "cursor_led.emissiveIntensity": 4.5,
+        "note": "mousedown: o corpo afunda no aro como uma tecla e revela mais filete aceso"
+      },
+      "limits": {
+        "cursor_body.position.z": [
+          -0.03589,
+          0.02051
+        ],
+        "note": "fora desse intervalo aparecem as partes escondidas do aro"
+      }
+    },
+    "interaction": {
+      "follow": "posicao no ponto do mouse (sem atraso, para precisao); a 'loucura' vai na rotacao e nos estados",
+      "tilt": "inclinacao por velocidade com mola de volta a rest_pose: rotation.y ~ vx, rotation.x ~ vy (limite ~30 graus); a vista 'motion' da folha de contato usa (14, 32, -16) graus",
+      "click": "down: corpo -Z (60-90 ms) + LED 4, squash leve no no cursor (scale 1.04, 0.96, 1) e volta com overshoot",
+      "extra": "o verso e acabado (grafite abaulado + filete): da para girar 360 graus em Y num clique duplo ou ao entrar numa secao"
+    },
+    "render": {
+      "toneMapping": "THREE.NeutralToneMapping",
+      "outputColorSpace": "SRGBColorSpace",
+      "background": "#050506"
+    },
+    "lights": [
+      {
+        "role": "key",
+        "direction": [
+          -0.5201,
+          0.7431,
+          0.4211
+        ],
+        "distance_mm": 404,
+        "size_mm": [
+          260,
+          170
+        ],
+        "angular_size_deg": [
+          35.7,
+          23.78
+        ],
+        "color_linear": [
+          1,
+          0.97,
+          0.94
+        ],
+        "color_hex": "#fffcf8",
+        "lightformer": {
+          "position": [
+            -5.2015,
+            7.4307,
+            4.2107
+          ],
+          "scale": [
+            6.4399,
+            4.2107
+          ],
+          "intensity": 13.4071
+        },
+        "directional_intensity": 3.6356
+      },
+      {
+        "role": "top_strip",
+        "direction": [
+          0.0954,
+          0.8903,
+          -0.4452
+        ],
+        "distance_mm": 314,
+        "size_mm": [
+          320,
+          36
+        ],
+        "angular_size_deg": [
+          53.93,
+          6.55
+        ],
+        "color_linear": [
+          1,
+          1,
+          1
+        ],
+        "color_hex": "#ffffff",
+        "lightformer": {
+          "position": [
+            0.9539,
+            8.9035,
+            -4.4517
+          ],
+          "scale": [
+            10.1754,
+            1.1447
+          ],
+          "intensity": 9.4708
+        },
+        "directional_intensity": 1.1032
+      },
+      {
+        "role": "rim_red_right",
+        "direction": [
+          0.4059,
+          0.1249,
+          -0.9054
+        ],
+        "distance_mm": 320,
+        "size_mm": [
+          150,
+          46
+        ],
+        "angular_size_deg": [
+          26.36,
+          8.21
+        ],
+        "color_linear": [
+          1,
+          0.018,
+          0.03
+        ],
+        "color_hex": "#ff2430",
+        "lightformer": {
+          "position": [
+            4.0585,
+            1.2488,
+            -9.0537
+          ],
+          "scale": [
+            4.6829,
+            1.4361
+          ],
+          "intensity": 79.2592
+        },
+        "directional_intensity": 5.3303
+      },
+      {
+        "role": "rim_red_left",
+        "direction": [
+          -0.3161,
+          0.0316,
+          -0.9482
+        ],
+        "distance_mm": 316,
+        "size_mm": [
+          120,
+          40
+        ],
+        "angular_size_deg": [
+          21.48,
+          7.23
+        ],
+        "color_linear": [
+          1,
+          0.03,
+          0.04
+        ],
+        "color_hex": "#ff3038",
+        "lightformer": {
+          "position": [
+            -3.1607,
+            0.3161,
+            -9.4821
+          ],
+          "scale": [
+            3.7928,
+            1.2643
+          ],
+          "intensity": 52.2845
+        },
+        "directional_intensity": 2.5071
+      },
+      {
+        "role": "front_fill",
+        "direction": [
+          -0.2253,
+          0.1288,
+          0.9657
+        ],
+        "distance_mm": 311,
+        "size_mm": [
+          320,
+          140
+        ],
+        "angular_size_deg": [
+          54.5,
+          25.4
+        ],
+        "color_linear": [
+          1,
+          0.98,
+          0.96
+        ],
+        "color_hex": "#fffdfa",
+        "lightformer": {
+          "position": [
+            -2.2534,
+            1.2876,
+            9.6573
+          ],
+          "scale": [
+            10.3012,
+            4.5068
+          ],
+          "intensity": 4.7478
+        },
+        "directional_intensity": 2.2042
+      },
+      {
+        "role": "fill_cool",
+        "direction": [
+          0.7836,
+          0.0327,
+          0.6204
+        ],
+        "distance_mm": 306,
+        "size_mm": [
+          260,
+          260
+        ],
+        "angular_size_deg": [
+          46,
+          46
+        ],
+        "color_linear": [
+          0.62,
+          0.76,
+          1
+        ],
+        "color_hex": "#cee2ff",
+        "lightformer": {
+          "position": [
+            7.8363,
+            0.3265,
+            6.2037
+          ],
+          "scale": [
+            8.4893,
+            8.4893
+          ],
+          "intensity": 0.4352
+        },
+        "directional_intensity": 0.3136
+      },
+      {
+        "role": "under_kicker_red",
+        "direction": [
+          0.1274,
+          -0.7325,
+          -0.6688
+        ],
+        "distance_mm": 314,
+        "size_mm": [
+          200,
+          80
+        ],
+        "angular_size_deg": [
+          35.33,
+          14.52
+        ],
+        "color_linear": [
+          1,
+          0.03,
+          0.04
+        ],
+        "color_hex": "#ff3038",
+        "lightformer": {
+          "position": [
+            1.2739,
+            -7.3247,
+            -6.6878
+          ],
+          "scale": [
+            6.3693,
+            2.5477
+          ],
+          "intensity": 26.9306
+        },
+        "directional_intensity": 4.3701
+      }
+    ],
+    "light_summary": {
+      "recipe": "<Environment resolution={256} frames={1}> com um <Lightformer form=rect> por item de lights (position, scale, intensity, color_hex, target=[0,0,0]); environmentIntensity 1; sem luz ambiente extra",
+      "note": "e a mesma luz de keys.hero.lights (mesmas direcoes e intensidades): um unico Environment serve teclas e cursor. A softbox key (cima/esquerda/frente) desenha o abaulado; as duas faixas vermelhas por tras recortam o aro na silhueta; o kicker vermelho de baixo segura a borda inferior no fundo preto.",
+      "validated": "3d/webcheck/cursor.js?rig=manifest (three.js 0.186) - ver folha de contato"
+    },
+    "fallback": {
+      "png_1x": {
+        "file": "/3d/cursor-fallback.png",
+        "width": 96,
+        "height": 96,
+        "bytes": 10091,
+        "hotspot": [
+          29,
+          4
+        ],
+        "hotspot_exact": [
+          29.56,
+          4.67
+        ]
+      },
+      "png_2x": {
+        "file": "/3d/cursor-fallback@2x.png",
+        "width": 192,
+        "height": 192,
+        "bytes": 28467,
+        "hotspot": [
+          58,
+          8
+        ],
+        "hotspot_exact": [
+          59.12,
+          9.34
+        ]
+      },
+      "pose": [
+        -14,
+        -30,
+        -3
+      ],
+      "quaternion_xyzw": [
+        -0.110952,
+        -0.259883,
+        0.006435,
+        0.959223
+      ],
+      "css": "cursor: url('/3d/cursor-fallback.png') 29 4, auto;",
+      "css_hidpi": "cursor: image-set(url('/3d/cursor-fallback.png') 1x, url('/3d/cursor-fallback@2x.png') 2x) 29 4, auto;",
+      "css_48px": "cursor: image-set(url('/3d/cursor-fallback.png') 2x, url('/3d/cursor-fallback@2x.png') 4x) 15 2, auto;",
+      "note": "render Cycles 3/4 (768 px, materiais das teclas) reduzido com lanczos; fundo transparente. Chrome/Firefox aceitam cursor de ate 128 px; o hotspot e a ponta visual da silhueta."
+    },
+    "validation": {
+      "checks": [
+        "OK   unico no raiz = cursor",
+        "OK   cursor_body presente",
+        "OK   cursor_rim presente",
+        "OK   cursor_core presente",
+        "OK   cursor_body filho de cursor",
+        "OK   cursor_rim filho de cursor",
+        "OK   cursor_core filho de cursor_rim",
+        "OK   cursor com transform identidade (origem = hotspot)",
+        "OK   cursor_body com transform identidade (origem = hotspot)",
+        "OK   cursor_rim com transform identidade (origem = hotspot)",
+        "OK   cursor_core com transform identidade (origem = hotspot)",
+        "OK   cursor_body triangulado",
+        "OK   cursor_body com NORMAL no GLB (normais suaves analiticas)",
+        "OK   cursor_rim triangulado",
+        "OK   cursor_rim com NORMAL no GLB (normais suaves analiticas)",
+        "OK   cursor_core triangulado",
+        "OK   cursor_core com NORMAL no GLB (normais suaves analiticas)",
+        "OK   total 9396 tris (<= ~12k)",
+        "OK   cursor.glb 25.6 KB (< 300 KB)",
+        "OK   Draco",
+        "OK   altura 1.0000 (= 1)",
+        "OK   hotspot na ponta: extremo do aro na direcao da ponta = -0.0000 (0 = origem)"
+      ],
+      "three_js": {
+        "front": {
+          "loadMs": 29,
+          "drawCalls": 3,
+          "triangles": 9396,
+          "hotspot_uv_error": 0
+        },
+        "hero": {
+          "loadMs": 28,
+          "drawCalls": 3,
+          "triangles": 9396,
+          "hotspot_uv_error": 0
+        },
+        "side": {
+          "loadMs": 26,
+          "drawCalls": 3,
+          "triangles": 9396,
+          "hotspot_uv_error": 0
+        },
+        "motion": {
+          "loadMs": 27,
+          "drawCalls": 3,
+          "triangles": 9396,
+          "hotspot_uv_error": 0
+        },
+        "family": {
+          "loadMs": 26,
+          "drawCalls": 7,
+          "triangles": 38837,
+          "hotspot_uv_error": 0
+        },
+        "back": {
+          "loadMs": 26,
+          "drawCalls": 3,
+          "triangles": 9396,
+          "hotspot_uv_error": 0
+        },
+        "hover3q": {
+          "loadMs": 29,
+          "drawCalls": 3,
+          "triangles": 9396,
+          "hotspot_uv_error": 0
+        },
+        "press3q": {
+          "loadMs": 26,
+          "drawCalls": 3,
+          "triangles": 9396,
+          "hotspot_uv_error": 0
+        },
+        "tree": [
+          "- > Scene [Group]",
+          "Scene > cursor [Object3D]",
+          "cursor > cursor_body [Mesh]",
+          "cursor > cursor_rim [Mesh]",
+          "cursor_rim > cursor_core [Mesh]"
+        ]
+      }
+    }
+  },
+  "cursorGlass": {
+    "file": "/3d/cursor-glass.glb",
+    "bytes": 20352,
+    "extensions": [
+      "KHR_draco_mesh_compression",
+      "KHR_materials_clearcoat",
+      "KHR_materials_transmission"
+    ],
+    "generated_by": "3d/cursor_glass.py (--mode build / --mode validate) + 3d/cursor_glass_web.mjs; rode 3d/build_cursor_glass.ps1",
+    "reference": "Blue Glass Cursor Icon (ponta de flecha arredondada com entalhe concavo na base), refeito em vidro vermelho",
+    "nodes": {
+      "cursor_glass": {
+        "type": "Mesh (1 primitiva)",
+        "material": "glass_red",
+        "tris": 10120,
+        "transform": "identidade",
+        "bbox": {
+          "min": [
+            -0.02111,
+            -0.98188,
+            -0.06479
+          ],
+          "max": [
+            0.95913,
+            0.01812,
+            0.06479
+          ],
+          "size": [
+            0.98024,
+            1,
+            0.12959
+          ]
+        },
+        "note": "origem = hotspot (meio do arco da ponta, plano medio z = 0). Normais analiticas (fillet + abaulado de Poisson)."
+      }
+    },
+    "hotspot": {
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "tip_direction": [
+        -0.6858,
+        0.7278,
+        0
+      ],
+      "tip_angle_deg": 47.2,
+      "usage": "posicione o no no ponto que a ponta deve tocar; gire em torno da origem para mirar."
+    },
+    "center": [
+      0.46901,
+      -0.48188,
+      0
+    ],
+    "orientation": {
+      "axes": "glTF Y-up: +Y cima, +X direita, +Z frente (face da frente).",
+      "view": "camera em +Z: a ponta mira em cima/esquerda (tip_direction), como na referencia.",
+      "poses": {
+        "front": {
+          "rotation_deg_xyz": [
+            0,
+            -6,
+            0
+          ],
+          "quaternion_xyzw": [
+            0,
+            -0.052336,
+            0,
+            0.99863
+          ],
+          "label": "quase de frente (ref. 4)"
+        },
+        "q34": {
+          "rotation_deg_xyz": [
+            -18,
+            -42,
+            -4
+          ],
+          "quaternion_xyzw": [
+            -0.133602,
+            -0.358837,
+            0.023847,
+            0.923481
+          ],
+          "label": "3/4 (ref. 2)"
+        },
+        "side": {
+          "rotation_deg_xyz": [
+            -6,
+            -70,
+            0
+          ],
+          "quaternion_xyzw": [
+            -0.042871,
+            -0.57279,
+            0.030019,
+            0.818029
+          ],
+          "label": "perfil: espessura e bevel"
+        },
+        "back": {
+          "rotation_deg_xyz": [
+            -8,
+            160,
+            0
+          ],
+          "quaternion_xyzw": [
+            -0.012113,
+            0.982409,
+            -0.068697,
+            0.173225
+          ],
+          "label": "verso"
+        },
+        "fallback": {
+          "rotation_deg_xyz": [
+            -18,
+            -42,
+            -4
+          ],
+          "quaternion_xyzw": [
+            -0.133602,
+            -0.358837,
+            0.023847,
+            0.923481
+          ],
+          "label": "fallback PNG 3/4"
+        }
+      }
+    },
+    "scale": {
+      "height": 1,
+      "width": 0.98024,
+      "thickness": 0.12959,
+      "thickness_pct_of_height": 12.96,
+      "edge_thickness": 0.11999,
+      "bevel_xy": 0.05759,
+      "bevel_z": 0.05039,
+      "dome": 0.0048,
+      "r_tip": 0.06719,
+      "r_base": 0.06479,
+      "r_notch": 0.17998
+    },
+    "material": {
+      "gltf": {
+        "doubleSided": true,
+        "extensions": {
+          "KHR_materials_clearcoat": {
+            "clearcoatFactor": 0.6000000238418579,
+            "clearcoatRoughnessFactor": 0.03999999910593033
+          },
+          "KHR_materials_transmission": {
+            "transmissionFactor": 1
+          }
+        },
+        "name": "glass_red",
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            1,
+            0.03433980792760849,
+            0.04373503103852272,
+            1
+          ],
+          "metallicFactor": 0,
+          "roughnessFactor": 0.07999999821186066
+        }
+      },
+      "web": {
+        "component": "drei MeshTransmissionMaterial",
+        "transmission": 1,
+        "thickness": 0.3,
+        "edge_thickness_boost": "x(1 + 2.8 (1 - |n.v|)^1.6) no shader (onBeforeCompile)",
+        "roughness": 0.035,
+        "ior": 1.5,
+        "color": "#ffc7ca",
+        "attenuationColor": "#e50914",
+        "attenuationDistance": "3 x altura do cursor na tela (mundo em px)",
+        "chromaticAberration": 0.06,
+        "anisotropicBlur": 0.05,
+        "distortion": 0.015,
+        "clearcoat": 0.5,
+        "environmentIntensity": 0.2,
+        "used_in": "src/components/cursor-companion-canvas.tsx",
+        "note": "attenuationDistance curta: o caminho longo pelas bordas satura o vermelho, o miolo (placa fina vista de frente) fica claro. Precisa de algo para refratar: um backdrop (glow vermelho + grade) atras dele, so nos buffers do vidro."
+      },
+      "cycles": "Principled transmissivo (1, 0.8, 0.8) + Volume Absorption vermelho (densidade 0.12/mm), rugosidade 0.06 com ruido"
+    },
+    "render": {
+      "toneMapping": "THREE.NeutralToneMapping",
+      "outputColorSpace": "SRGBColorSpace",
+      "lights": "mesma luz das teclas (manifest.keys.hero.lights / manifest.cursor.lights)"
+    },
+    "fallback": {
+      "png_1x": {
+        "file": "/3d/cursor-glass.png",
+        "width": 512,
+        "height": 512,
+        "bytes": 138138,
+        "hotspot": [
+          82,
+          40
+        ],
+        "hotspot_exact": [
+          84.54,
+          46.07
+        ],
+        "center": [
+          232.9,
+          242.77
+        ]
+      },
+      "png_2x": {
+        "file": "/3d/cursor-glass@2x.png",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 413164,
+        "hotspot": [
+          165,
+          80
+        ],
+        "hotspot_exact": [
+          169.07,
+          92.13
+        ],
+        "center": [
+          465.79,
+          485.55
+        ]
+      },
+      "pose": [
+        -18,
+        -42,
+        -4
+      ],
+      "quaternion_xyzw": [
+        -0.133602,
+        -0.358837,
+        0.023847,
+        0.923481
+      ],
+      "note": "render Cycles 3/4 (1024 px), fundo transparente; o vidro refrata um fundo escuro com glow vermelho e grade (invisivel para a camera)."
+    },
+    "validation": [
+      "OK   unico no raiz = cursor_glass",
+      "OK   um unico material (glass_red)",
+      "OK   KHR_materials_transmission",
+      "OK   Draco",
+      "OK   transform identidade (origem = hotspot)",
+      "OK   10120 tris (<= 15k)",
+      "OK   NORMAL no GLB (normais analiticas)",
+      "OK   cursor-glass.glb 19.9 KB",
+      "OK   altura 1.0000 (= 1)",
+      "OK   hotspot na ponta: extremo na direcao da ponta = -0.0000",
+      "OK   espessura 0.130 da altura (12-15%)",
+      "OK   malha fechada (0 arestas nao-manifold)"
+    ]
+  }
+}

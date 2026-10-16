@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
     return [
       { source: "/projetos/:path*", headers: cache },
       { source: "/processo/:path*", headers: cache },
-      { source: "/:file(logo-.*|jed-foto.png)", headers: cache },
+      { source: "/:file(logo-.*|jed-foto.png|jed-foto-hd.webp)", headers: cache },
     ]
   },
 };

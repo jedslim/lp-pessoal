@@ -12,7 +12,7 @@ export const site = {
   url: "https://jedtec.com.br",
   title: "Jedson Santos | Desenvolvedor Full Stack | JEDTEC",
   description:
-    "Desenvolvedor full stack com mais de 4 anos e 80+ projetos no ar. Sites e sistemas em Next.js, React e WordPress, integrações e automação com IA. Aberto a projetos, freelas e novas oportunidades.",
+    "Jedson Santos, desenvolvedor full stack. Sites, sistemas e automações com Next.js, React, WordPress e IA aplicada. Mais de 4 anos e 80+ projetos no ar.",
   // Enquanto for null, o e-mail não aparece no site.
   email: null as string | null,
   phone: "+55 22 98868-7417",

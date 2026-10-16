@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Caveat, Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
+import { MotionProvider } from "@/components/kit/motion-provider";
 import { site } from "@/lib/site";
 
 const geistSans = Geist({
@@ -8,19 +9,25 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-// Manuscrita: anotações à mão (ex.: "da ideia… ao resultado" no Sobre)
-const caveat = Caveat({
-  variable: "--font-caveat",
+// Display expandida (eixo wdth até 125%): conversa com o logo JEDTEC
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
-  weight: ["500"],
-  // Só aparece no Sobre: não disputa banda com a primeira dobra
-  preload: false,
+  axes: ["wdth"],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  // Usada só em detalhes abaixo da primeira dobra
+});
+
+// Acento editorial: no máximo três palavras no site inteiro
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["italic"],
+  // Sem preload: a hero não usa mais serifa (só a seção Sobre, abaixo da dobra)
   preload: false,
 });
 
@@ -41,6 +48,7 @@ export const metadata: Metadata = {
     "ACF",
     "integrações e APIs",
     "automação com IA",
+    "n8n",
     "landing page",
     "Jedson Santos",
     "JEDTEC",
@@ -63,7 +71,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#030303",
+  themeColor: "#050506",
   colorScheme: "dark",
 };
 
@@ -72,9 +80,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="pt-BR"
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${archivo.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   );
 }
