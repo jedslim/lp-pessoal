@@ -42,6 +42,8 @@ export const projects: Project[] = [
     host: "banijayestudios.com.br",
     url: "https://banijayestudios.com.br/",
     agency: "Agência ILI",
+    featured: true,
+    keyword: "Experiência",
   },
   {
     slug: "afabrica",
@@ -116,8 +118,6 @@ export const projects: Project[] = [
     tags: ["WordPress", "PHP", "ACF", "APIs"],
     ...media("ferradura-private"),
     host: "ferradurahotel.com.br/ferradura-private",
-    featured: true,
-    keyword: "Reservas",
   },
   {
     slug: "vans-mil",
