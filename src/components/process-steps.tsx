@@ -58,10 +58,9 @@ const LANE = 12
 const LANE_B = 40
 const CURVE = 56
 const ROW = 40
-/** Bolinhas do desvio (as rodadas de ajuste). */
-const ROUNDS = 3
-const branchHeight = CURVE * 2 + ROW * ROUNDS
-const branchPath = `M${LANE} 0 C${LANE} 30 ${LANE_B} 26 ${LANE_B} ${CURVE} L${LANE_B} ${branchHeight - CURVE} C${LANE_B} ${branchHeight - 26} ${LANE} ${branchHeight - 30} ${LANE} ${branchHeight}`
+const branchHeight = (n: number) => CURVE * 2 + ROW * n
+const branchPath = (h: number) =>
+  `M${LANE} 0 C${LANE} 30 ${LANE_B} 26 ${LANE_B} ${CURVE} L${LANE_B} ${h - CURVE} C${LANE_B} ${h - 26} ${LANE} ${h - 30} ${LANE} ${h}`
 
 const pad = (n: number) => String(n).padStart(2, "0")
 
@@ -77,7 +76,8 @@ export function ProcessSteps({
   outro,
 }: {
   steps: Step[]
-  /** Etapa antes da qual a linha faz o desvio das rodadas de ajuste. */
+  /** Etapa antes da qual a linha faz o desvio. O que a etapa anterior
+   * entrega vira as bolinhas do desvio, em vez dos selos. */
   branchBefore?: number
   intro: ReactNode
   /** Fecho depois da última etapa (o convite para começar). */
@@ -197,7 +197,7 @@ export function ProcessSteps({
                 total={steps.length}
                 last={i === steps.length - 1}
                 tight={i === (branchBefore ?? -1) - 1}
-                branch={i === branchBefore}
+                branch={i === branchBefore ? steps[i - 1]?.gets : undefined}
                 reduce={reduce}
                 onLit={onLit}
               />
@@ -237,10 +237,10 @@ function StepRow({
   index: number
   total: number
   last: boolean
-  /** Logo antes do desvio: encurta o respiro para a curva colar na etapa. */
+  /** Logo antes do desvio: encurta o respiro e as entregas vão para o desvio. */
   tight: boolean
-  /** O desvio entra antes desta etapa. */
-  branch: boolean
+  /** O desvio entra antes desta etapa, com estes itens. */
+  branch?: string[]
   reduce: boolean
   onLit: (index: number, on: boolean) => void
 }) {
@@ -251,7 +251,7 @@ function StepRow({
 
   return (
     <>
-      {branch && <BranchRow reduce={reduce} />}
+      {branch && <BranchRow items={branch} reduce={reduce} />}
       <li
         className={cn(
           "group/step relative pl-10 sm:pl-[72px]",
@@ -286,8 +286,12 @@ function StepRow({
             {step.body}
           </p>
 
-          {/* O que fica com a pessoa ao fim da etapa */}
-          <ul aria-label="Você recebe" className="mt-6 flex flex-wrap gap-2">
+          {/* O que fica com a pessoa ao fim da etapa (antes do desvio, os
+              itens aparecem nas bolinhas dele; aqui ficam só para leitor de tela) */}
+          <ul
+            aria-label="Você recebe"
+            className={tight ? "sr-only" : "mt-6 flex flex-wrap gap-2"}
+          >
             {step.gets.map((g, i) => (
               <li
                 key={g}
@@ -318,8 +322,10 @@ function StepRow({
   )
 }
 
-/** O desvio: a linha sai da principal, passa por três bolinhas e volta. */
-function BranchRow({ reduce }: { reduce: boolean }) {
+/** O desvio: a linha sai da principal, passa pelas entregas e volta. */
+function BranchRow({ items, reduce }: { items: string[]; reduce: boolean }) {
+  const h = branchHeight(items.length)
+  const d = branchPath(h)
   const ref = useRef<HTMLLIElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -333,18 +339,18 @@ function BranchRow({ reduce }: { reduce: boolean }) {
       ref={ref}
       aria-hidden
       className="relative mb-12 sm:mb-16"
-      style={{ height: branchHeight }}
+      style={{ height: h }}
     >
       <svg
         width={LANE_B + 8}
-        height={branchHeight}
-        viewBox={`0 0 ${LANE_B + 8} ${branchHeight}`}
+        height={h}
+        viewBox={`0 0 ${LANE_B + 8} ${h}`}
         fill="none"
         className="absolute top-0 left-0 overflow-visible"
       >
-        <path d={branchPath} stroke="var(--border)" strokeWidth={2} />
+        <path d={d} stroke="var(--border)" strokeWidth={2} />
         <motion.path
-          d={branchPath}
+          d={d}
           stroke="var(--text-primary)"
           strokeOpacity={0.7}
           strokeWidth={2}
@@ -356,28 +362,62 @@ function BranchRow({ reduce }: { reduce: boolean }) {
           }
         />
       </svg>
-      {Array.from({ length: ROUNDS }, (_, i) => (
-        <BranchDot key={i} top={CURVE + i * ROW + ROW / 2} reduce={reduce} />
+      {items.map((item, i) => (
+        <BranchItem
+          key={item}
+          label={item}
+          top={CURVE + i * ROW}
+          reduce={reduce}
+        />
       ))}
     </li>
   )
 }
 
-function BranchDot({ top, reduce }: { top: number; reduce: boolean }) {
+/** Bolinha do desvio com a entrega ao lado: acende quando a linha chega. */
+function BranchItem({
+  label,
+  top,
+  reduce,
+}: {
+  label: string
+  top: number
+  reduce: boolean
+}) {
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { margin: LIT_MARGIN })
   const on = reduce || inView
   return (
-    <span
-      ref={ref}
-      className={cn(
-        "absolute size-2.5 -translate-y-1/2 rounded-full border-2 transition-colors duration-500",
-        on
-          ? "border-foreground bg-foreground"
-          : "bg-background border-[#3a3a40]",
-      )}
-      style={{ top, left: LANE_B - 5 }}
-    />
+    <div
+      className="absolute inset-x-0 flex items-center"
+      style={{ top, height: ROW }}
+    >
+      <span
+        ref={ref}
+        className={cn(
+          "absolute size-2.5 rounded-full border-2 transition-colors duration-500",
+          on
+            ? "border-foreground bg-foreground"
+            : "bg-background border-[#3a3a40]",
+        )}
+        style={{ left: LANE_B - 5 }}
+      />
+      <p
+        className={cn(
+          "ease-out-expo flex items-center gap-2 pl-[60px] text-sm whitespace-nowrap transition-[opacity,translate] duration-700 sm:pl-[72px] sm:text-[15px]",
+          on ? "translate-x-0 opacity-100" : "-translate-x-2 opacity-35",
+        )}
+      >
+        <Check
+          aria-hidden
+          className={cn(
+            "size-3.5 transition-colors duration-500",
+            on ? "text-red-light" : "text-muted-foreground",
+          )}
+        />
+        <span className="text-foreground">{label}</span>
+      </p>
+    </div>
   )
 }
 

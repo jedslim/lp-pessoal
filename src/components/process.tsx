@@ -16,7 +16,7 @@ const steps: Step[] = [
     label: "Plano",
     title: "A solução certa para o seu caso.",
     body: "Site, loja, sistema ou automação: indico o que faz sentido hoje e o que vai ser fácil de cuidar depois. Você não paga por complexidade que não vai usar.",
-    gets: ["Escopo bem definido", "Estrutura das páginas"],
+    gets: ["Escopo bem definido", "Estrutura das páginas", "Mapa do site"],
   },
   {
     label: "Criação",
