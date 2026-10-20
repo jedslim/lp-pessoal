@@ -54,7 +54,7 @@ export function Work() {
           <div className="lg:col-span-4 lg:self-end lg:justify-self-end lg:pb-h2-base xl:col-start-9">
             <p className="max-w-[34ch] text-base leading-relaxed text-balance text-muted-foreground sm:text-lg">
               <span className="text-foreground">
-                10 projetos entre os 80+ que já coloquei em produção.
+                {total} projetos entre os 80+ que já coloquei em produção.
               </span>
               <span className="hidden lg:pointer-fine:inline">
                 {" "}

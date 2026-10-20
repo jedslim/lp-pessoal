@@ -31,25 +31,6 @@ const media = (slug: string) => ({
 
 export const projects: Project[] = [
   {
-    slug: "eztec",
-    name: "EZTEC",
-    segment: "Mercado imobiliário",
-    scope: "Front em Next.js + WordPress headless",
-    description:
-      "Portal imobiliário com lançamentos, obras em andamento e imóveis prontos. Front-end em Next.js consumindo WordPress headless pela REST API, com todo o conteúdo editável via ACF.",
-    tags: ["Next.js", "React", "WordPress headless", "ACF", "REST API"],
-    ...media("eztec"),
-    video: {
-      ...media("eztec").video,
-      small: { webm: "/projetos/eztec-m.webm", mp4: "/projetos/eztec-m.mp4" },
-    },
-    host: "www.eztec.com.br",
-    url: "https://www.eztec.com.br/",
-    agency: "Agência ILI",
-    featured: true,
-    keyword: "Headless",
-  },
-  {
     slug: "banijay",
     name: "Banijay Studios",
     segment: "Audiovisual",
@@ -135,6 +116,8 @@ export const projects: Project[] = [
     tags: ["WordPress", "PHP", "ACF", "APIs"],
     ...media("ferradura-private"),
     host: "ferradurahotel.com.br/ferradura-private",
+    featured: true,
+    keyword: "Reservas",
   },
   {
     slug: "vans-mil",

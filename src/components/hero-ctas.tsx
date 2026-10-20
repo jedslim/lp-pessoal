@@ -40,7 +40,7 @@ import { cn } from "@/lib/utils"
 const MESSAGE = new URL(site.whatsapp).searchParams.get("text") ?? ""
 
 /** Os sites do leque: três sites de cores bem diferentes. */
-const FAN = ["eztec", "afabrica", "s-dot"]
+const FAN = ["ferradura-private", "afabrica", "s-dot"]
   .map((slug) => projects.find((p) => p.slug === slug))
   .filter((p) => p !== undefined)
 
