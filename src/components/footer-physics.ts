@@ -43,6 +43,8 @@ type Item = PhysKey & {
   body: Body
   /** Já entrou no palco (passa a bater no teto). */
   inside: boolean
+  /** Guardada fora de cena, estática, até a queda (ou até `place`). */
+  parked: boolean
   lx: number
   ly: number
   la: number
@@ -141,8 +143,11 @@ export class KeyWorld {
         slop: 0.04,
         collisionFilter: { category: CAT_KEY, mask: CAT_WALL | CAT_KEY | CAT_PUSH },
       })
+      // Estática enquanto guardada: sem isso a gravidade a puxaria e o resgate
+      // a traria para o palco antes da queda (as teclas caíam duas vezes)
+      M.Body.setStatic(body, true)
       M.Composite.add(this.engine.world, body)
-      this.items.push({ ...k, body, inside: false, lx: NaN, ly: NaN, la: NaN, aa: NaN, lift: 0 })
+      this.items.push({ ...k, body, inside: false, parked: true, lx: NaN, ly: NaN, la: NaN, aa: NaN, lift: 0 })
     }
     // Fora de cena até a queda (ou até `place`)
     this.render(true)
@@ -198,6 +203,7 @@ export class KeyWorld {
     for (const it of this.items) {
       const s = spots.get(it.id)
       if (!s) continue
+      this.unpark(it)
       Body.setPosition(it.body, s)
       Body.setAngle(it.body, 0)
       Body.setVelocity(it.body, { x: 0, y: 0 })
@@ -220,6 +226,7 @@ export class KeyWorld {
       const f = (i * 0.618034 + 0.17) % 1
       const x = clamp(margin + f * (W - margin * 2), it.w / 2 + 4, W - it.w / 2 - 4)
       const y = -it.h - i * u * 0.62 - Math.random() * u * 0.3
+      this.unpark(it)
       Body.setPosition(it.body, { x, y })
       // Pouco giro: a maioria assenta de pé (legível); as que batem de quina tombam
       Body.setAngle(it.body, (Math.random() - 0.5) * 0.5)
@@ -475,6 +482,7 @@ export class KeyWorld {
 
     let moving = false
     for (const it of this.items) {
+      if (it.parked) continue
       const b = it.body
       if (b.isStatic) {
         moving = true
@@ -499,6 +507,13 @@ export class KeyWorld {
       if (b.speed > 0.12 || Math.abs(b.angularVelocity) > 0.003) moving = true
     }
     this.calm = moving ? 0 : this.calm + 1
+  }
+
+  /** Sai da guarda: volta a ter massa e a cair. */
+  private unpark(it: Item) {
+    if (!it.parked) return
+    it.parked = false
+    this.M.Body.setStatic(it.body, false)
   }
 
   /** Dentro do palco: passa a bater no teto. */
