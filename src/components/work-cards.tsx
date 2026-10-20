@@ -290,7 +290,7 @@ function WorkCard({
     <li
       ref={ref}
       onFocus={onFocus}
-      className="group/card max-md:w-[85%] max-md:max-w-[22rem] max-md:shrink-0 max-md:snap-start md:max-lg:last:col-span-2"
+      className="group/card max-md:w-[85%] max-md:max-w-[22rem] max-md:shrink-0 max-md:snap-start md:max-lg:odd:last:col-span-2"
     >
       {/* Profundidade do carrossel: --d (0 no centro, 1 fora) vem da rolagem */}
       <div className="relative h-full max-md:motion-safe:[scale:calc(1-0.06*var(--d,0))]">
@@ -304,11 +304,11 @@ function WorkCard({
             // No carrossel a fila inteira entra junta (o invólucro anima)
             "max-md:[transform:none]! max-md:opacity-100!",
             // Tablet: o último card (sozinho na linha) deita, capa e ficha lado a lado
-            "md:max-lg:group-last/card:grid md:max-lg:group-last/card:grid-cols-[1.1fr_1fr]",
+            "md:max-lg:group-odd/card:group-last/card:grid md:max-lg:group-odd/card:group-last/card:grid-cols-[1.1fr_1fr]",
           )}
         >
           {/* Capa: mockup → site rodando */}
-          <div className="relative m-2 aspect-video overflow-hidden rounded-[14px] bg-background md:max-lg:group-last/card:aspect-auto md:max-lg:group-last/card:min-h-52">
+          <div className="relative m-2 aspect-video overflow-hidden rounded-[14px] bg-background md:max-lg:group-odd/card:group-last/card:aspect-auto md:max-lg:group-odd/card:group-last/card:min-h-52">
             <Image
               src={p.image}
               alt={`Mockup do site ${p.name} no desktop e no celular`}
@@ -365,7 +365,7 @@ function WorkCard({
           </div>
 
           {/* Ficha. Container: o nome mede pela largura do card, não da tela */}
-          <div className="@container flex flex-1 flex-col px-5 pt-5 pb-5 sm:px-6 md:max-lg:group-last/card:pl-4">
+          <div className="@container flex flex-1 flex-col px-5 pt-5 pb-5 sm:px-6 md:max-lg:group-odd/card:group-last/card:pl-4">
             <div className="text-label flex items-center justify-between gap-3 text-[10px] text-muted-foreground max-[380px]:gap-2">
               <span className="shrink-0">
                 <span className="text-red-light">{number}</span>

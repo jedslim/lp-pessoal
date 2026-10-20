@@ -100,7 +100,7 @@ const lines: Line[] = [
       ["key", `${IND}status`],
       ["pun", ": "],
       ["dot", ""],
-      ["str", '"disponível"'],
+      ["str", '"aberto a propostas"'],
       ["pun", ","],
     ],
   },

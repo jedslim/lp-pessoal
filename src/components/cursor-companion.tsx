@@ -11,10 +11,12 @@ import { cn } from "@/lib/utils"
  * personagem que visita as seções conforme a rolagem (o roteiro está em
  * cursor-companion-stops.ts, a cena em cursor-companion-canvas.tsx).
  *
- * Porteiro: só com mouse (pointer fine), GPU de verdade (o mesmo teste da
- * hero) e sem reduced motion. O chunk do three baixa logo depois do primeiro
- * paint da hidratação. Fora disso não entra nada aqui; o celular continua
- * com o PNG do cursor de vidro na hero (hero-keys.tsx).
+ * Porteiro: tela de tablet para cima (768px de largura e 600px de altura;
+ * com mouse ou toque, já que o roteiro anda pela rolagem), GPU de verdade (o
+ * mesmo teste da hero) e sem reduced motion. A altura mínima deixa de fora o
+ * celular deitado. O chunk do three baixa logo depois do primeiro paint da
+ * hidratação. Fora disso não entra nada aqui; o celular continua com o PNG
+ * do cursor de vidro na hero (hero-keys.tsx).
  *
  * Camada: canvas fixo cobrindo a janela, sem ponteiro, acima do conteúdo e
  * abaixo do header (z-60) e do menu (z-70). Com ele ligado, o <html> ganha
@@ -25,7 +27,7 @@ const CompanionCanvas = dynamic(() => import("@/components/cursor-companion-canv
   ssr: false,
 })
 
-const QUERY = "(pointer: fine) and (min-width: 768px) and (prefers-reduced-motion: no-preference)"
+const QUERY = "(min-width: 768px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)"
 
 export function CursorCompanion() {
   const [on, setOn] = useState(false)

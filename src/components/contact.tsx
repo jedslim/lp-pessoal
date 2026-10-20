@@ -96,7 +96,7 @@ export function Contact() {
             kind="vaga"
             index="02"
             title="Tenho uma vaga"
-            text="Procurando dev full stack para o time? Já atuei em agência, como freela e em produto."
+            text="Procurando dev full stack para o time? Hoje estou na Agência ILI e aberto a novas propostas."
             cta="Falar sobre a vaga"
             href={site.whatsappJob}
             onHot={hotOn("vaga")}

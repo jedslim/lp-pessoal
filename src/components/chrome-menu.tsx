@@ -545,7 +545,7 @@ function Actions({ onLeave }: { onLeave: () => void }) {
               Jedson Santos
             </span>
             <span className="mt-1.5 block text-[15px] leading-tight text-emerald-300/90">
-              Disponível para projetos e vagas
+              Aberto a novas propostas
             </span>
           </span>
         </div>

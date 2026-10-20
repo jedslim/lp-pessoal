@@ -156,17 +156,22 @@ export function About() {
           <div className="min-w-0">
             <div className="max-w-[38rem]">
               <p className="text-ink text-[1.3rem] leading-[1.45] tracking-[-0.012em] text-pretty sm:text-[1.6rem]">
-                Sou {site.name}, desenvolvedor full stack. Trabalho do front ao
-                back, sozinho ou junto do time: em agência, como freela ou
-                dentro de produto.
+                Sou {site.name}, desenvolvedor full stack. Hoje faço parte do
+                time da Agência ILI, onde cuido de sites e sistemas do front ao
+                back.
               </p>
               <p className="text-ink-muted mt-7 text-base leading-relaxed text-pretty sm:text-lg">
-                No momento, estou{" "}
+                E estou{" "}
                 <strong className="text-ink font-medium">
-                  disponível para projetos e também para vagas
+                  aberto a novas propostas
                 </strong>
-                . Minha formação é em Análise e Desenvolvimento de Sistemas, e
-                fiz o curso de arquitetura de multiagentes da StartSe.
+                : um projeto como freela ou uma vaga em outro time.
+              </p>
+              <p className="text-ink-muted mt-4 text-base leading-relaxed text-pretty sm:text-lg">
+                Sou formado em Análise e Desenvolvimento de Sistemas e fiz o
+                curso de arquitetura de multiagentes da StartSe. Mas não parei
+                por aí: sigo estudando, principalmente IA aplicada ao
+                desenvolvimento, e levo para cada projeto o que aprendo.
               </p>
             </div>
 

@@ -113,7 +113,7 @@ export function SiteFooter() {
             </p>
             <p className="text-muted-foreground mt-2 flex items-center gap-2.5 text-[15px]">
               <StatusDot />
-              Disponível para projetos e vagas
+              Aberto a novas propostas
             </p>
           </div>
 
