@@ -541,7 +541,9 @@ function Companion({ onReady }: { onReady: () => void }) {
         if (id && !E.map.has(id)) E.map.set(id, el)
       })
     }
-    const s0 = clamp(H * 0.13, 92, 140)
+    // A largura também limita: no tablet em pé a altura sobra e a seta
+    // ficava enorme perto do texto (no desktop quem decide segue a altura)
+    const s0 = clamp(Math.min(H * 0.13, W * 0.09), 72, 140)
     const live: Live[] = []
     for (const stop of COMPANION_STOPS) {
       const el = E.map.get(stop.id)
