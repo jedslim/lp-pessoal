@@ -34,7 +34,7 @@ export const sections = [
   {
     id: "contato",
     label: "Contato",
-    blurb: "Projeto ou vaga, direto no WhatsApp",
+    blurb: "Seu projeto, direto no WhatsApp",
   },
 ] as const
 

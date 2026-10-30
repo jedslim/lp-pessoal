@@ -466,13 +466,13 @@ type Icon = ComponentType<{ className?: string }>
 /** O texto que cada link do WhatsApp já leva preenchido (vem do próprio link). */
 const messages = {
   project: new URL(site.whatsappProject).searchParams.get("text") ?? "",
-  job: new URL(site.whatsappJob).searchParams.get("text") ?? "",
+  idea: new URL(site.whatsappIdea).searchParams.get("text") ?? "",
 }
 type Message = keyof typeof messages
 
 /**
  * Prévia da conversa: mostra a mensagem que vai pronta para o WhatsApp.
- * Passar o mouse (ou o foco) em "Tenho uma vaga" troca a mensagem, com o
+ * Passar o mouse (ou o foco) em "Tenho uma ideia" troca a mensagem, com o
  * "digitando…" e a digitação de uma conversa de verdade.
  */
 function useChatPreview() {
@@ -545,7 +545,7 @@ function Actions({ onLeave }: { onLeave: () => void }) {
               Jedson Santos
             </span>
             <span className="mt-1.5 block text-[15px] leading-tight text-emerald-300/90">
-              Aberto a novas propostas
+              Aceitando novos projetos
             </span>
           </span>
         </div>
@@ -573,12 +573,12 @@ function Actions({ onLeave }: { onLeave: () => void }) {
         </Rise>
         <Rise order={3}>
           <KeyLink
-            href={site.whatsappJob}
+            href={site.whatsappIdea}
             icon={WhatsappIcon}
             onClick={onLeave}
-            onPreview={() => chat.say("job")}
+            onPreview={() => chat.say("idea")}
           >
-            Tenho uma vaga
+            Tenho uma ideia
           </KeyLink>
         </Rise>
         <Rise order={3} className="lg:hidden">

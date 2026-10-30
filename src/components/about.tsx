@@ -157,15 +157,16 @@ export function About() {
             <div className="max-w-[38rem]">
               <p className="text-ink text-[1.3rem] leading-[1.45] tracking-[-0.012em] text-pretty sm:text-[1.6rem]">
                 Sou {site.name}, desenvolvedor full stack. Hoje faço parte do
-                time da Agência ILI, onde cuido de sites e sistemas do front ao
-                back.
+                time da Agência ILI, onde desenvolvo sites e sistemas para
+                marcas de vários segmentos.
               </p>
               <p className="text-ink-muted mt-7 text-base leading-relaxed text-pretty sm:text-lg">
-                E estou{" "}
+                Em paralelo,{" "}
                 <strong className="text-ink font-medium">
-                  aberto a novas propostas
+                  atendo projetos próprios
                 </strong>
-                : um projeto como freela ou uma vaga em outro time.
+                : sites, sistemas e automações para quem quer tirar uma ideia
+                do papel.
               </p>
               <p className="text-ink-muted mt-4 text-base leading-relaxed text-pretty sm:text-lg">
                 Sou formado em Análise e Desenvolvimento de Sistemas e fiz o

@@ -113,7 +113,7 @@ export function SiteFooter() {
             </p>
             <p className="text-muted-foreground mt-2 flex items-center gap-2.5 text-[15px]">
               <StatusDot />
-              Aberto a novas propostas
+              Aceitando novos projetos
             </p>
           </div>
 
@@ -175,7 +175,7 @@ export function SiteFooter() {
           <div className="col-span-2 sm:col-span-1 sm:col-start-2 sm:row-start-1 lg:col-span-4 lg:col-start-9 xl:col-span-3 xl:col-start-10">
             <div>
               <p className="text-display-2 text-[clamp(1.75rem,7vw,2.1rem)] leading-[0.98] text-balance lg:text-[clamp(1.6rem,2.1vw,2.1rem)]">
-                Tem um projeto ou uma vaga?
+                Tem um projeto em mente?
               </p>
               <p className="text-muted-foreground mt-3 max-w-[32ch] text-[15px] leading-relaxed text-pretty">
                 A conversa abre no WhatsApp com a mensagem pronta.

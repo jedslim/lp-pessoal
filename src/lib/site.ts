@@ -24,8 +24,8 @@ export const site = {
   whatsappProject: whatsapp(
     "Oi, Jedson! Vim pelo seu site e tenho um projeto para conversar.",
   ),
-  whatsappJob: whatsapp(
-    "Oi, Jedson! Vim pelo seu site e tenho uma oportunidade de trabalho para você.",
+  whatsappIdea: whatsapp(
+    "Oi, Jedson! Vim pelo seu site e tenho uma ideia para conversar.",
   ),
   // Coloque o PDF em public/ e informe o caminho (ex.: "/curriculo-jedson-santos.pdf").
   // Enquanto for null, o botão "Baixar currículo" não aparece.

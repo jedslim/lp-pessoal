@@ -88,7 +88,7 @@ export function HeroCtas({ className }: { className?: string }) {
         )}
       >
         <StatusDot />
-        Aberto a novas propostas
+        Aceitando novos projetos
       </p>
     </div>
   )
@@ -401,7 +401,7 @@ function ChatPreview() {
         </span>
         <span className="min-w-0 leading-tight">
           <span className="block text-[13px] font-medium text-white">{site.name}</span>
-          <span className="block text-[11.5px] text-emerald-400/90">aberto a novas propostas</span>
+          <span className="block text-[11.5px] text-emerald-400/90">aceitando novos projetos</span>
         </span>
         <WhatsappIcon className="ml-auto size-4 shrink-0 text-[#25D366]" />
       </div>

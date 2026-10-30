@@ -93,13 +93,13 @@ export function Contact() {
             onHot={hotOn("projeto")}
           />
           <ContactPath
-            kind="vaga"
+            kind="ideia"
             index="02"
-            title="Tenho uma vaga"
-            text="Procurando dev full stack para o time? Hoje estou na Agência ILI e aberto a novas propostas."
-            cta="Falar sobre a vaga"
-            href={site.whatsappJob}
-            onHot={hotOn("vaga")}
+            title="Tenho uma ideia"
+            text="Ainda não sabe bem do que precisa? Me conta a ideia e eu ajudo a encontrar o melhor caminho."
+            cta="Contar a ideia"
+            href={site.whatsappIdea}
+            onHot={hotOn("ideia")}
           />
         </div>
 
@@ -118,7 +118,7 @@ export function Contact() {
  * tecla armada acende o de "projeto" (é a conversa que ela abre), em
  * cascata: tronco → ramo → nó, como um sinal descendo.
  * Os pés caem no centro de cada coluna (25% menos 1/4 do gap da grade).
- * As flags (`--projeto`, `--vaga`) são as opções do "conversar" da
+ * As flags (`--projeto`, `--ideia`) são as opções do "conversar" da
  * pergunta: embaralham quando o sinal chega no ramo delas.
  */
 function PathFork({ hot, armed }: { hot: PathKind | null; armed: boolean }) {
@@ -156,25 +156,25 @@ function PathFork({ hot, armed }: { hot: PathKind | null; armed: boolean }) {
         />
       </span>
 
-      {/* Ramo da vaga */}
+      {/* Ramo da ideia */}
       <span
         className={cn(
           line,
-          "group-has-[[data-path=vaga]:hover]/contact:border-red-light group-has-[[data-path=vaga]_a:focus-visible]/contact:border-red-light absolute top-1/2 right-[calc(25%-0.25rem)] bottom-0 left-1/2 rounded-tr-2xl border-t border-r lg:right-[calc(25%-0.375rem)]",
+          "group-has-[[data-path=ideia]:hover]/contact:border-red-light group-has-[[data-path=ideia]_a:focus-visible]/contact:border-red-light absolute top-1/2 right-[calc(25%-0.25rem)] bottom-0 left-1/2 rounded-tr-2xl border-t border-r lg:right-[calc(25%-0.375rem)]",
         )}
       >
         <Flag
-          text="--vaga"
-          on={hot === "vaga"}
+          text="--ideia"
+          on={hot === "ideia"}
           className={cn(
             flag,
-            "group-has-[[data-path=vaga]:hover]/contact:text-red-light group-has-[[data-path=vaga]_a:focus-visible]/contact:text-red-light right-6",
+            "group-has-[[data-path=ideia]:hover]/contact:text-red-light group-has-[[data-path=ideia]_a:focus-visible]/contact:text-red-light right-6",
           )}
         />
         <span
           className={cn(
             node,
-            "group-has-[[data-path=vaga]:hover]/contact:border-red-light group-has-[[data-path=vaga]:hover]/contact:bg-red-light group-has-[[data-path=vaga]_a:focus-visible]/contact:border-red-light group-has-[[data-path=vaga]_a:focus-visible]/contact:bg-red-light -right-px translate-x-1/2",
+            "group-has-[[data-path=ideia]:hover]/contact:border-red-light group-has-[[data-path=ideia]:hover]/contact:bg-red-light group-has-[[data-path=ideia]_a:focus-visible]/contact:border-red-light group-has-[[data-path=ideia]_a:focus-visible]/contact:bg-red-light -right-px translate-x-1/2",
           )}
         />
       </span>
@@ -391,13 +391,13 @@ const strength =
   "ease-out-expo stroke-1 opacity-50 transition-[opacity,stroke-width] duration-500 group-data-[armed=true]/contact:stroke-2 group-data-[armed=true]/contact:opacity-100 group-has-[[data-ask]:hover]/contact:stroke-2 group-has-[[data-ask]:hover]/contact:opacity-100"
 const hotProjeto =
   "group-has-[[data-path=projeto]:hover]/contact:opacity-100 group-has-[[data-path=projeto]_a:focus-visible]/contact:opacity-100"
-const hotVaga =
-  "group-has-[[data-path=vaga]:hover]/contact:opacity-100 group-has-[[data-path=vaga]_a:focus-visible]/contact:opacity-100"
+const hotIdeia =
+  "group-has-[[data-path=ideia]:hover]/contact:opacity-100 group-has-[[data-path=ideia]_a:focus-visible]/contact:opacity-100"
 const mergeNode =
   "ease-out-expo fill-background stroke-white/30 transition-[fill,stroke] duration-500"
 
 /**
- * O garfo fecha: abaixo do contato direto, os ramos `--projeto` e `--vaga`
+ * O garfo fecha: abaixo do contato direto, os ramos `--projeto` e `--ideia`
  * voltam a se juntar e o tronco desce até a borda do footer, onde o sinal
  * se espalha pela régua. Hairline vermelha de 1px, sem halo (o LED da tecla
  * é o único brilho da seção), desenhada pelo scroll. Card em hover/foco: o
@@ -487,7 +487,7 @@ function PathMerge({ className }: { className?: string }) {
             <motion.path
               d={`M${x2} 0V${m - r}A${r} ${r} 0 0 1 ${x2 - r} ${m}H${c}`}
               style={draw(branchLen)}
-              className={cn(strength, hotVaga, "stroke-red-light group-data-[armed=true]/contact:delay-[400ms]")}
+              className={cn(strength, hotIdeia, "stroke-red-light group-data-[armed=true]/contact:delay-[400ms]")}
             />
             <motion.path
               d={`M${c} ${m}V${h}`}
@@ -532,7 +532,7 @@ function PathMerge({ className }: { className?: string }) {
               r={3}
               className={cn(
                 mergeNode,
-                "group-has-[[data-path=vaga]:hover]/contact:fill-red-light group-has-[[data-path=vaga]:hover]/contact:stroke-red-light group-has-[[data-path=vaga]_a:focus-visible]/contact:fill-red-light group-has-[[data-path=vaga]_a:focus-visible]/contact:stroke-red-light",
+                "group-has-[[data-path=ideia]:hover]/contact:fill-red-light group-has-[[data-path=ideia]:hover]/contact:stroke-red-light group-has-[[data-path=ideia]_a:focus-visible]/contact:fill-red-light group-has-[[data-path=ideia]_a:focus-visible]/contact:stroke-red-light",
               )}
             />
           </>

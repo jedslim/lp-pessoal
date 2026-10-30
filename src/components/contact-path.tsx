@@ -5,13 +5,13 @@ import { CheckCheck, ChevronRight } from "lucide-react"
 import { useScramble } from "@/components/chrome-scramble"
 import { ButtonLink } from "@/components/kit/button-link"
 
-export type PathKind = "projeto" | "vaga"
+export type PathKind = "projeto" | "ideia"
 
 /**
  * Um dos dois caminhos do contato. O card inteiro é clicável (o link do
  * botão se estica por cima dele) e, no hover, a borda acende seguindo o
  * cursor e o título ganha a seta de seleção de um prompt de terminal.
- * O kicker é a flag do ramo do garfo acima (`--projeto`, `--vaga`) e
+ * O kicker é a flag do ramo do garfo acima (`--projeto`, `--ideia`) e
  * embaralha junto com ela. O balão mostra a mensagem que já vai
  * preenchida no WhatsApp (o ícone do botão avisa para onde ele leva).
  */
