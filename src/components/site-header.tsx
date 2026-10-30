@@ -6,9 +6,10 @@ import {
   useRef,
   useState,
   type FocusEvent,
-  type MouseEvent,
   type RefObject,
 } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import {
   AnimatePresence,
   LayoutGroup,
@@ -24,7 +25,7 @@ import {
   SiteMenu,
   menuRing,
 } from "@/components/chrome-menu"
-import { goTo, sections, type SectionId } from "@/components/chrome-nav"
+import { goTo, isPage, onNav, sections, type SectionId } from "@/components/chrome-nav"
 import { useScramble } from "@/components/chrome-scramble"
 import { ButtonLink } from "@/components/kit/button-link"
 import { site } from "@/lib/site"
@@ -35,8 +36,13 @@ const EASE = [0.22, 1, 0.36, 1] as const
 /** Rolagem mínima (px) antes de o header poder sumir. */
 const HIDE_AFTER = 140
 
-/** Seção que cruza a faixa logo acima do meio da tela (null na hero). */
+/**
+ * Item ativo: a página própria aberta (Portfólio) ou, na home, a seção que
+ * cruza a faixa logo acima do meio da tela (null na hero).
+ */
 function useActiveSection() {
+  const pathname = usePathname()
+  const page = sections.find((s) => isPage(s.href) && pathname.startsWith(s.href))
   const [active, setActive] = useState<SectionId | null>(null)
   useEffect(() => {
     const crossing = new Set<string>()
@@ -50,20 +56,14 @@ function useActiveSection() {
       },
       { rootMargin: "-40% 0px -55% 0px" },
     )
-    for (const s of sections) {
-      const el = document.getElementById(s.id)
-      if (el) observer.observe(el)
-    }
+    if (pathname === "/")
+      for (const s of sections) {
+        const el = isPage(s.href) ? null : document.getElementById(s.id)
+        if (el) observer.observe(el)
+      }
     return () => observer.disconnect()
-  }, [])
-  return active
-}
-
-/** Clique na âncora: rola com Lenis e leva o foco junto. */
-const onAnchor = (hash: `#${string}`) => (e: MouseEvent) => {
-  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
-  e.preventDefault()
-  goTo(hash)
+  }, [pathname])
+  return page?.id ?? active
 }
 
 export function SiteHeader() {
@@ -120,12 +120,12 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* 1º Tab da página: pula o header direto para o trabalho */}
+      {/* 1º Tab da página: pula o header direto para o conteúdo */}
       <a
-        href="#trabalho"
+        href="#conteudo"
         onClick={(e) => {
           e.preventDefault()
-          goTo("#trabalho")
+          goTo("#conteudo")
         }}
         className={cn(
           "sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-5 focus:z-[80] focus:inline-flex focus:h-10 focus:items-center focus:rounded-full focus:border focus:border-white/15 focus:bg-[rgb(11_11_13/0.92)] focus:px-4 focus:text-sm focus:font-medium focus:whitespace-nowrap focus:shadow-[0_12px_40px_-12px_rgb(0_0_0/0.9)] focus:backdrop-blur-xl sm:focus:left-8 lg:focus:left-12",
@@ -176,7 +176,7 @@ export function SiteHeader() {
                 {sections.map((s) => (
                   <li key={s.id}>
                     <NavLink
-                      id={s.id}
+                      href={s.href}
                       label={s.label}
                       active={active === s.id}
                       hovered={hovered === s.id}
@@ -218,13 +218,13 @@ export function SiteHeader() {
 /* ---------- Peças do header ---------- */
 
 function NavLink({
-  id,
+  href,
   label,
   active,
   hovered,
   onHover,
 }: {
-  id: SectionId
+  href: string
   label: string
   active: boolean
   hovered: boolean
@@ -232,8 +232,8 @@ function NavLink({
 }) {
   const [text, scramble] = useScramble(label.toUpperCase())
   return (
-    <a
-      href={`#${id}`}
+    <Link
+      href={href}
       aria-current={active ? "location" : undefined}
       onPointerEnter={() => {
         scramble()
@@ -243,7 +243,7 @@ function NavLink({
         scramble()
         onHover()
       }}
-      onClick={onAnchor(`#${id}`)}
+      onClick={onNav(href)}
       className={cn(
         "relative flex h-10 items-center rounded-full px-3 font-mono text-[11px] tracking-[0.16em] uppercase transition-colors duration-300 xl:px-4 xl:text-[12px]",
         menuRing,
@@ -279,7 +279,7 @@ function NavLink({
           className="bg-red-light absolute inset-x-3 -bottom-3 h-px shadow-[0_0_10px_rgb(255_52_59/0.9)] xl:inset-x-4"
         />
       )}
-    </a>
+    </Link>
   )
 }
 

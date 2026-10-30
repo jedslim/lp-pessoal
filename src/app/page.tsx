@@ -1,6 +1,5 @@
 import { About } from "@/components/about"
 import { AmbientLight } from "@/components/ambient-light"
-import { Capabilities } from "@/components/capabilities"
 import { ConsoleGreeting } from "@/components/console-greeting"
 import { CursorCompanion } from "@/components/cursor-companion"
 import { Contact } from "@/components/contact"
@@ -10,7 +9,6 @@ import { ProofBand } from "@/components/proof-band"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { SmoothScroll } from "@/components/smooth-scroll"
-import { StackTable } from "@/components/stack-table"
 import { Work } from "@/components/work"
 import { projects } from "@/lib/projects"
 import { stack } from "@/lib/stack"
@@ -56,12 +54,10 @@ export default function Home() {
       <AmbientLight />
       <ConsoleGreeting />
       <SiteHeader />
-      <main className="relative">
+      <main id="conteudo" className="relative">
         <Hero />
         <ProofBand />
         <Work />
-        <Capabilities />
-        <StackTable />
         <Process />
         <About />
         <Contact />

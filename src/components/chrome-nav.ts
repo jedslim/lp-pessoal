@@ -1,44 +1,68 @@
-import type { KeyboardEvent as ReactKeyboardEvent } from "react"
+import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent } from "react"
 import { scrollToTarget } from "@/components/smooth-scroll"
 
 /**
- * Seções da página, na ordem em que aparecem. `blurb`: uma linha do que tem
- * lá, para o menu aberto (e para quem mais quiser descrever a seção).
+ * Itens da navegação, na ordem do menu. `href`: seção da home (`/#id`) ou
+ * outra página (`/portfolio`). `blurb`: uma linha do que tem lá, para o
+ * menu aberto (e para quem mais quiser descrever o destino).
  */
 export const sections = [
   {
     id: "trabalho",
+    href: "/#trabalho",
     label: "Trabalho",
     blurb: "Projetos no ar, com vídeo de cada site",
   },
   {
-    id: "capacidades",
-    label: "Capacidades",
-    blurb: "Web, WordPress, automação e IA, na prática",
-  },
-  {
-    id: "stack",
-    label: "Stack",
-    blurb: "As ferramentas que eu uso, tecla por tecla",
-  },
-  {
     id: "processo",
+    href: "/#processo",
     label: "Processo",
-    blurb: "Como um projeto anda, da conversa ao deploy",
+    blurb: "Como um projeto anda, da conversa ao site no ar",
   },
   {
     id: "sobre",
+    href: "/#sobre",
     label: "Sobre",
     blurb: "Quem sou, formação e como eu trabalho",
   },
   {
+    id: "portfolio",
+    href: "/portfolio",
+    label: "Portfólio",
+    blurb: "Stack, capacidades e o lado técnico",
+  },
+  {
     id: "contato",
+    href: "/#contato",
     label: "Contato",
     blurb: "Seu projeto, direto no WhatsApp",
   },
 ] as const
 
 export type SectionId = (typeof sections)[number]["id"]
+
+/** Item que é uma página própria (não uma seção da home). */
+export const isPage = (href: string) => !href.includes("#")
+
+/**
+ * A âncora de `href` se ela estiver na página aberta agora (`/#sobre`
+ * estando na home); senão null, e quem chamou deixa o link navegar.
+ */
+export function hashHere(href: string): `#${string}` | null {
+  const at = href.indexOf("#")
+  if (at < 0) return null
+  const path = href.slice(0, at) || "/"
+  return path === window.location.pathname ? (href.slice(at) as `#${string}`) : null
+}
+
+/** Clique num item: na mesma página rola com Lenis; em outra, o Link navega. */
+export const onNav = (href: string) => (e: MouseEvent) => {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+  const hash = hashHere(href)
+  if (!hash) return
+  e.preventDefault()
+  goTo(hash)
+}
 
 /**
  * Rola até a seção e leva o foco junto (teclado e leitor de tela continuam

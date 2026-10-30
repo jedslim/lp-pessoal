@@ -182,8 +182,17 @@ export function About() {
                 uma com metade da largura: alvo fácil para o polegar sem empilhar */}
             <div className="mt-10 grid gap-2 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
               <ButtonLink
-                href={site.linkedin}
+                href="/portfolio"
                 variant="dark"
+                size="lg"
+                external={false}
+                className="justify-between pl-5 min-[360px]:col-span-2 sm:pl-7"
+              >
+                Ver portfólio
+              </ButtonLink>
+              <ButtonLink
+                href={site.linkedin}
+                variant="ink-ghost"
                 size="lg"
                 className="min-w-0 justify-between pl-5 sm:pl-7"
               >

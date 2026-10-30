@@ -1,13 +1,14 @@
 "use client"
 
-import { useRef, useState, type ComponentType, type CSSProperties, type MouseEvent } from "react"
+import { useRef, useState, type ComponentType, type CSSProperties } from "react"
+import Link from "next/link"
 import { ArrowUp, ArrowUpRight, Mail, Rows2, Shuffle } from "lucide-react"
 import {
   GithubIcon,
   LinkedinIcon,
   WhatsappIcon,
 } from "@/components/brand-icons"
-import { goTo, sections } from "@/components/chrome-nav"
+import { goTo, onNav, sections } from "@/components/chrome-nav"
 import { ScrambleText } from "@/components/chrome-scramble-text"
 import { FooterName } from "@/components/footer-name"
 import {
@@ -51,12 +52,6 @@ const listLink = cn(
 )
 const bullet =
   "bg-red-light ease-out-expo size-1.5 shrink-0 scale-0 transition-transform duration-500 group-hover/l:scale-100 group-focus-visible/l:scale-100"
-
-const onAnchor = (hash: `#${string}`) => (e: MouseEvent) => {
-  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
-  e.preventDefault()
-  goTo(hash)
-}
 
 /**
  * Estojo do deck, na linguagem do teclado do Stack: grafite com a luz de
@@ -123,9 +118,9 @@ export function SiteFooter() {
             <ul>
               {sections.map((s) => (
                 <li key={s.id}>
-                  <a
-                    href={`#${s.id}`}
-                    onClick={onAnchor(`#${s.id}`)}
+                  <Link
+                    href={s.href}
+                    onClick={onNav(s.href)}
                     className={listLink}
                   >
                     <span aria-hidden className={bullet} />
@@ -134,7 +129,7 @@ export function SiteFooter() {
                       preserveCase
                       className="ease-out-expo -ml-4 transition-[margin] duration-500 group-hover/l:ml-0 group-focus-visible/l:ml-0"
                     />
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

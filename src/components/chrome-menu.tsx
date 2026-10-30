@@ -11,6 +11,7 @@ import {
   type RefObject,
 } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { motion, useReducedMotion } from "motion/react"
 import {
@@ -28,6 +29,7 @@ import {
 import {
   copyText,
   goTo,
+  hashHere,
   lockScroll,
   sections,
   trapTab,
@@ -129,15 +131,19 @@ export function SiteMenu({
     }
   }, [close])
 
-  // Toque num item: a palavra embaralha um instante e só então o menu fecha
+  // Toque num item: a palavra embaralha um instante e só então o menu fecha.
+  // Seção desta página: rola até ela; outra página: navega
+  const router = useRouter()
   const pending = useRef<ReturnType<typeof setTimeout>>(undefined)
   useEffect(() => () => clearTimeout(pending.current), [])
-  const navigate = (hash: `#${string}`, wait: number) => {
+  const navigate = (href: string, wait: number) => {
     if (closing.current || pending.current) return
     const go = () => {
       if (closing.current) return
       close(false)
-      goTo(hash)
+      const hash = hashHere(href)
+      if (hash) goTo(hash)
+      else router.push(href)
     }
     if (wait <= 0) go()
     else pending.current = setTimeout(go, wait)
@@ -209,7 +215,7 @@ export function SiteMenu({
                 {sections.map((s, i) => (
                   <MenuItem
                     key={s.id}
-                    id={s.id}
+                    href={s.href}
                     label={s.label}
                     blurb={s.blurb}
                     order={i}
@@ -217,7 +223,7 @@ export function SiteMenu({
                     dimmed={hovered !== null && hovered !== s.id}
                     linkRef={i === 0 ? firstLink : undefined}
                     onHover={() => setHovered(s.id)}
-                    onNavigate={(wait) => navigate(`#${s.id}`, wait)}
+                    onNavigate={(wait) => navigate(s.href, wait)}
                   />
                 ))}
               </ul>
@@ -318,7 +324,7 @@ const TAP_SCRAMBLE = 200
  * instante antes de navegar.
  */
 function MenuItem({
-  id,
+  href,
   label,
   blurb,
   order,
@@ -328,7 +334,7 @@ function MenuItem({
   onHover,
   onNavigate,
 }: {
-  id: SectionId
+  href: string
   label: string
   blurb: string
   order: number
@@ -356,7 +362,7 @@ function MenuItem({
     <li className="border-b border-white/[0.09] first:border-t">
       <a
         ref={linkRef}
-        href={`#${id}`}
+        href={href}
         aria-current={current ? "location" : undefined}
         onPointerDown={(e) => {
           if (e.button !== 0) return
