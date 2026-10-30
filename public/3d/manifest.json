@@ -39,66 +39,6 @@
         "KHR_materials_clearcoat"
       ]
     },
-    "key-cmd.webp": {
-      "file": "/3d/key-cmd.webp",
-      "width": 720,
-      "height": 686,
-      "bytes": 25234,
-      "crop_of_render": {
-        "x": 6.74,
-        "y": 8.75,
-        "w": 86.53,
-        "h": 82.5
-      }
-    },
-    "key-k.webp": {
-      "file": "/3d/key-k.webp",
-      "width": 720,
-      "height": 708,
-      "bytes": 24290,
-      "crop_of_render": {
-        "x": 6.74,
-        "y": 7.43,
-        "w": 86.53,
-        "h": 85.14
-      }
-    },
-    "key-brackets.webp": {
-      "file": "/3d/key-brackets.webp",
-      "width": 693,
-      "height": 720,
-      "bytes": 21040,
-      "crop_of_render": {
-        "x": 8.33,
-        "y": 6.74,
-        "w": 83.33,
-        "h": 86.53
-      }
-    },
-    "key-slash.webp": {
-      "file": "/3d/key-slash.webp",
-      "width": 720,
-      "height": 708,
-      "bytes": 22790,
-      "crop_of_render": {
-        "x": 6.74,
-        "y": 7.43,
-        "w": 86.53,
-        "h": 85.14
-      }
-    },
-    "key-enter.webp": {
-      "file": "/3d/key-enter.webp",
-      "width": 720,
-      "height": 703,
-      "bytes": 26840,
-      "crop_of_render": {
-        "x": 6.74,
-        "y": 7.78,
-        "w": 86.53,
-        "h": 84.44
-      }
-    },
     "key-deploy-up.webp": {
       "file": "/3d/key-deploy-up.webp",
       "width": 1400,
@@ -203,6 +143,66 @@
         465.79,
         485.55
       ]
+    },
+    "key-cmd-logo.webp": {
+      "file": "/3d/key-cmd-logo.webp",
+      "width": 720,
+      "height": 684,
+      "bytes": 25744,
+      "crop_of_render": {
+        "x": 6.74,
+        "y": 8.75,
+        "w": 86.53,
+        "h": 82.5
+      }
+    },
+    "key-k-logo.webp": {
+      "file": "/3d/key-k-logo.webp",
+      "width": 720,
+      "height": 703,
+      "bytes": 32434,
+      "crop_of_render": {
+        "x": 6.74,
+        "y": 7.43,
+        "w": 86.53,
+        "h": 85.14
+      }
+    },
+    "key-brackets-logo.webp": {
+      "file": "/3d/key-brackets-logo.webp",
+      "width": 696,
+      "height": 720,
+      "bytes": 25260,
+      "crop_of_render": {
+        "x": 8.33,
+        "y": 6.74,
+        "w": 83.33,
+        "h": 86.53
+      }
+    },
+    "key-slash-logo.webp": {
+      "file": "/3d/key-slash-logo.webp",
+      "width": 720,
+      "height": 703,
+      "bytes": 29762,
+      "crop_of_render": {
+        "x": 6.74,
+        "y": 7.43,
+        "w": 86.53,
+        "h": 85.14
+      }
+    },
+    "key-enter-logo.webp": {
+      "file": "/3d/key-enter-logo.webp",
+      "width": 720,
+      "height": 701,
+      "bytes": 33796,
+      "crop_of_render": {
+        "x": 6.74,
+        "y": 7.78,
+        "w": 86.53,
+        "h": 84.44
+      }
     }
   },
   "keys": {
@@ -268,7 +268,7 @@
           ]
         },
         "fallback": {
-          "file": "/3d/key-cmd.webp",
+          "file": "/3d/key-cmd-logo.webp",
           "width": 720,
           "height": 686,
           "bytes": 25234,
@@ -340,7 +340,7 @@
           ]
         },
         "fallback": {
-          "file": "/3d/key-k.webp",
+          "file": "/3d/key-k-logo.webp",
           "width": 720,
           "height": 708,
           "bytes": 24290,
@@ -412,7 +412,7 @@
           ]
         },
         "fallback": {
-          "file": "/3d/key-brackets.webp",
+          "file": "/3d/key-brackets-logo.webp",
           "width": 693,
           "height": 720,
           "bytes": 21040,
@@ -484,7 +484,7 @@
           ]
         },
         "fallback": {
-          "file": "/3d/key-slash.webp",
+          "file": "/3d/key-slash-logo.webp",
           "width": 720,
           "height": 708,
           "bytes": 22790,
@@ -556,7 +556,7 @@
           ]
         },
         "fallback": {
-          "file": "/3d/key-enter.webp",
+          "file": "/3d/key-enter-logo.webp",
           "width": 720,
           "height": 703,
           "bytes": 26840,

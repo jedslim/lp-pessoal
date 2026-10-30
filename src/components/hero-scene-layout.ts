@@ -101,7 +101,7 @@ export const HERO_KEYS: readonly HeroKeyDef[] = [
     },
     sm: { x: -1.74, y: -0.12, size: 0.82 },
     keys: ["Meta", "Control", "OS"],
-    img: { src: "/3d/key-cmd.webp", w: 720, h: 686 },
+    img: { src: "/3d/key-cmd-logo.webp", w: 720, h: 684 },
   },
   {
     id: "k",
@@ -117,7 +117,7 @@ export const HERO_KEYS: readonly HeroKeyDef[] = [
     },
     sm: { x: 1.72, y: 0.26, size: 0.7 },
     keys: ["k", "K"],
-    img: { src: "/3d/key-k.webp", w: 720, h: 708 },
+    img: { src: "/3d/key-k-logo.webp", w: 720, h: 703 },
   },
   {
     id: "brackets",
@@ -138,7 +138,7 @@ export const HERO_KEYS: readonly HeroKeyDef[] = [
     // Tablet: à direita do "n" de "Jedson", acima do K
     md: { x: 2.75, y: -0.78, size: 0.44 },
     keys: ["{", "}", "[", "]"],
-    img: { src: "/3d/key-brackets.webp", w: 693, h: 720 },
+    img: { src: "/3d/key-brackets-logo.webp", w: 696, h: 720 },
   },
   {
     id: "slash",
@@ -157,7 +157,7 @@ export const HERO_KEYS: readonly HeroKeyDef[] = [
     // Tablet: à direita do fim de "Santos", abaixo do K
     md: { x: 2.9, y: 1.5, size: 0.4 },
     keys: ["/", "?"],
-    img: { src: "/3d/key-slash.webp", w: 720, h: 708 },
+    img: { src: "/3d/key-slash-logo.webp", w: 720, h: 703 },
   },
   {
     id: "enter",
@@ -182,7 +182,7 @@ export const HERO_KEYS: readonly HeroKeyDef[] = [
     },
     sm: { x: -1.62, y: 1.02, size: 0.56 },
     keys: ["Enter"],
-    img: { src: "/3d/key-enter.webp", w: 720, h: 703 },
+    img: { src: "/3d/key-enter-logo.webp", w: 720, h: 701 },
   },
 ]
 
