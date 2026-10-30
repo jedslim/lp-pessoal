@@ -18,21 +18,34 @@ import { cn } from "@/lib/utils"
 
 /** Rótulo em duas partes: no celular quebra entre elas; do sm para cima,
  *  uma linha só. */
-const stats = [
+export type HeroStat = {
+  value: number
+  label: readonly [string, string]
+  /** Mostra o "+" vermelho (número aproximado para baixo). Padrão: sim. */
+  plus?: boolean
+}
+
+const stats: readonly HeroStat[] = [
   { value: 80, label: ["projetos", "no ar"] },
   { value: 4, label: ["anos em", "produção"] },
   { value: 8, label: ["segmentos", "atendidos"] },
-] as const
+]
 
 /** Peso em repouso e no hover (o eixo wdth fica em 125, o da display). */
 const LIGHT = "[font-variation-settings:'wdth'_125,'wght'_300]"
 const HEAVY = "[font-variation-settings:'wdth'_125,'wght'_800]"
 
-export function HeroStats({ className }: { className?: string }) {
+export function HeroStats({
+  className,
+  items = stats,
+}: {
+  className?: string
+  items?: readonly HeroStat[]
+}) {
   return (
     <dl className={cn("flex gap-x-9 sm:gap-x-14 lg:gap-x-16", className)}>
-      {stats.map((stat, i) => (
-        <Stat key={stat.value} {...stat} index={i} />
+      {items.map((stat, i) => (
+        <Stat key={stat.label.join(" ")} {...stat} index={i} />
       ))}
     </dl>
   )
@@ -41,12 +54,9 @@ export function HeroStats({ className }: { className?: string }) {
 function Stat({
   value,
   label,
+  plus = true,
   index,
-}: {
-  value: number
-  label: readonly [string, string]
-  index: number
-}) {
+}: HeroStat & { index: number }) {
   // Cada hover remonta o odômetro (key) e ele roda de novo; um por vez
   const [round, setRound] = useState(0)
   const last = useRef(0)
@@ -64,12 +74,12 @@ function Stat({
         <br className="sm:hidden" /> {label[1]}
       </dt>
       <dd className="text-display text-[2.6rem] leading-none lg:text-[clamp(2.75rem,4.1vw,4.25rem)]">
-        <span className="sr-only">{value}+</span>
+        <span className="sr-only">{plus ? `${value}+` : value}</span>
         <span aria-hidden className="inline-grid">
           {/* Fantasma no peso do hover: reserva a largura */}
           <span className={cn("invisible col-start-1 row-start-1 inline-flex items-start tabular-nums", HEAVY)}>
             {value}
-            <Plus />
+            {plus && <Plus />}
           </span>
           <span
             className={cn(
@@ -84,7 +94,7 @@ function Stat({
               delay={round ? 0 : 0.5 + index * 0.12}
               duration={round ? 1100 : 1800}
             />
-            <Plus />
+            {plus && <Plus />}
           </span>
         </span>
       </dd>

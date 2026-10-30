@@ -1,9 +1,8 @@
 "use client"
 
-import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react"
+import { useEffect, useRef, type MouseEvent, type ReactNode } from "react"
 import { useInView } from "motion/react"
 import { ArrowDown } from "lucide-react"
-import { AboutConfig, type AboutLink } from "@/components/about-config"
 import { AboutFigure } from "@/components/about-figure"
 import { AboutSheet } from "@/components/about-sheet"
 import { AboutStrike } from "@/components/about-strike"
@@ -111,7 +110,6 @@ function NextPage() {
 
 export function About() {
   const ref = useRef<HTMLElement>(null)
-  const [link, setLink] = useState<AboutLink | null>(null)
 
   return (
     <section
@@ -176,11 +174,11 @@ export function About() {
               </p>
             </div>
 
-            <AboutConfig active={link} onLink={setLink} className="mt-14 lg:mt-16" />
 
             {/* No celular, as duas pílulas lado a lado (a partir de 360px), cada
                 uma com metade da largura: alvo fácil para o polegar sem empilhar */}
-            <div className="mt-10 grid gap-2 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
+            {/* data-companion: a seta de vidro pousa logo abaixo dos botões */}
+            <div data-companion="about" className="mt-10 grid gap-2 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
               <ButtonLink
                 href="/portfolio"
                 variant="dark"

@@ -3,11 +3,11 @@ import { AmbientLight } from "@/components/ambient-light"
 import { Capabilities } from "@/components/capabilities"
 import { CursorCompanion } from "@/components/cursor-companion"
 import { PortfolioIntro } from "@/components/portfolio-intro"
+import { PortfolioProjects } from "@/components/portfolio-projects"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 import { SmoothScroll } from "@/components/smooth-scroll"
 import { StackTable } from "@/components/stack-table"
-import { Work } from "@/components/work"
 import { site } from "@/lib/site"
 
 const title = `Portfólio | ${site.name}`
@@ -31,9 +31,9 @@ export default function Portfolio() {
       <SiteHeader />
       <main id="conteudo" className="relative">
         <PortfolioIntro />
+        <PortfolioProjects />
         <Capabilities />
         <StackTable />
-        <Work />
       </main>
       <SiteFooter />
       <CursorCompanion />

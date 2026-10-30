@@ -359,6 +359,10 @@ function patchEdgeThickness(m: THREE.Material | null) {
 
 type Live = {
   stop: CompanionStop
+  /** Alvo no DOM: ordena as paradas pela página aberta. */
+  el: HTMLElement
+  /** Fundo sob o alvo: o da parada, a não ser que ele não esteja numa seção clara. */
+  tone: number
   tip: Pt
   ang: number
   arrive: number
@@ -563,6 +567,10 @@ function Companion({ onReady }: { onReady: () => void }) {
       const aim = stop.aim?.(r, sc)
       live.push({
         stop,
+        el,
+        // O tom claro é da seção clara (o Sobre da home): o mesmo alvo em
+        // fundo escuro (o editor no portfólio) refrata escuro
+        tone: stop.tone === 1 && !el.closest('[data-tone="light"]') ? 0 : stop.tone,
         tip,
         ang: aim ? NATURAL + clamp(wrap(Math.atan2(aim.y - tip.y, aim.x - tip.x) - NATURAL), -AIM_MAX, AIM_MAX) : NATURAL,
         arrive: smooth01((ENTER_FROM * H - tip.y) / ((ENTER_FROM - ENTER_TO) * H)),
@@ -570,6 +578,11 @@ function Companion({ onReady }: { onReady: () => void }) {
         sub,
       })
     }
+    // A ordem é a da página aberta, não a da lista (no portfólio o editor,
+    // que é a parada "about", vem antes de tudo)
+    live.sort((a, b) =>
+      a.el === b.el ? 0 : a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
+    )
     if (!live.length) {
       pivot.current.visible = false
       return
@@ -593,7 +606,7 @@ function Companion({ onReady }: { onReady: () => void }) {
     let gy = pa.y
     let gAng = A.ang
     let gScale = A.scale
-    let gTone: number = A.stop.tone
+    let gTone: number = A.tone
     let flight = 0
     if (B && f > 0) {
       const pb = clampTip(B.tip, false)
@@ -609,7 +622,7 @@ function Companion({ onReady }: { onReady: () => void }) {
       gy = u * u * pa.y + 2 * u * fe * cy + fe * fe * pb.y
       gAng = lerpAngle(A.ang, B.ang, fe)
       gScale = A.scale + (B.scale - A.scale) * fe
-      gTone = A.stop.tone + (B.stop.tone - A.stop.tone) * fe
+      gTone = A.tone + (B.tone - A.tone) * fe
       flight = Math.sin(Math.PI * fe)
     }
     const holdIdx = flight < 0.05 ? COMPANION_STOPS.indexOf((fe > 0.5 && B ? B : A).stop) : -1
