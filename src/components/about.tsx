@@ -6,6 +6,7 @@ import { ArrowDown } from "lucide-react"
 import { AboutFigure } from "@/components/about-figure"
 import { AboutSheet } from "@/components/about-sheet"
 import { AboutStrike } from "@/components/about-strike"
+import { AboutTimeline } from "@/components/about-timeline"
 import { goTo } from "@/components/chrome-nav"
 import { useScramble } from "@/components/chrome-scramble"
 import { ButtonLink } from "@/components/kit/button-link"
@@ -47,6 +48,13 @@ const statementLine = (i: number) =>
         i === 1 && "mb-[0.6em]",
       )
     : undefined
+
+/** A ficha do perfil (termo, valor). */
+const profile = [
+  ["Atuação", "Desenvolvedor full stack"],
+  ["Hoje", "Agência ILI"],
+  ["Formação", "Análise e Desenvolvimento de Sistemas"],
+] as const
 
 /** Marca de registro de gráfica (⊕), ornamento do cabeçalho. */
 function RegMark() {
@@ -174,11 +182,25 @@ export function About() {
               </p>
             </div>
 
+            {/* Ficha, como o box de perfil de uma revista: o resumo de quem é,
+                em linguagem de gente (o jedson.config.ts mora no portfólio) */}
+            <dl className="border-ink/15 mt-12 max-w-[38rem] border-t lg:mt-14">
+              {profile.map(([term, value]) => (
+                <div
+                  key={term}
+                  className="border-ink/10 grid grid-cols-[7.5rem_1fr] items-baseline gap-4 border-b py-4 sm:grid-cols-[10rem_1fr]"
+                >
+                  <dt className="text-label text-ink-muted">{term}</dt>
+                  <dd className="text-ink text-[15px] leading-snug sm:text-base">{value}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <AboutTimeline className="mt-12 max-w-[38rem] lg:mt-14" />
 
             {/* No celular, as duas pílulas lado a lado (a partir de 360px), cada
                 uma com metade da largura: alvo fácil para o polegar sem empilhar */}
-            {/* data-companion: a seta de vidro pousa logo abaixo dos botões */}
-            <div data-companion="about" className="mt-10 grid gap-2 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
+            <div className="mt-10 grid gap-2 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
               <ButtonLink
                 href="/portfolio"
                 variant="dark"

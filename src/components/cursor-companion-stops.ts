@@ -78,7 +78,17 @@ export const COMPANION_STOPS: readonly CompanionStop[] = [
     scale: 0.9,
   },
   {
-    // Sobre: logo abaixo do card de código, no fundo claro, apontando para ele
+    // Sobre (home): na linha do tempo, a ponta no marco aceso; toca cada
+    // marco que acende na demonstração (é ela que mostra que dá para mexer)
+    id: "timeline",
+    sub: '[aria-selected="true"] > span',
+    tip: (r) => ({ x: r.left + r.width * 0.6, y: r.top + r.height * 0.6 }),
+    aim: null,
+    tone: 1,
+    tap: { onSubChange: true },
+  },
+  {
+    // Portfólio: logo abaixo do card de código (jedson.config.ts)
     id: "about",
     tip: (r, s) => ({ x: r.left + r.width * 0.74, y: r.bottom + s * 0.06 }),
     aim: null,
