@@ -80,6 +80,8 @@ export function ProjectVideo({
   label,
   className,
   onTime,
+  onReady,
+  preload = "none",
   poster = true,
 }: {
   project: Project
@@ -92,6 +94,10 @@ export function ProjectVideo({
   onTime?: (current: number, duration: number) => void
   /** false: segura o poster (nem baixa) até o vídeo chegar perto da tela. */
   poster?: boolean
+  /** Já tem quadro tocando na tela (true) ou parou/está carregando (false). */
+  onReady?: (ready: boolean) => void
+  /** "auto": começa a baixar antes do play (o card da vez no carrossel). */
+  preload?: "none" | "metadata" | "auto"
 }) {
   const small = project.video.small
   const ref = useRef<HTMLVideoElement>(null)
@@ -135,8 +141,11 @@ export function ProjectVideo({
       muted
       loop
       playsInline
-      preload="none"
+      preload={preload}
       poster={poster ? posterOf(project) : undefined}
+      onPlaying={() => onReady?.(true)}
+      onWaiting={() => onReady?.(false)}
+      onPause={() => onReady?.(false)}
       aria-label={label}
       aria-hidden={label ? undefined : true}
       className={cn("block size-full object-cover object-top", className)}

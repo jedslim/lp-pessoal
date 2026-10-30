@@ -74,9 +74,6 @@ export function Work() {
           <div className="text-label mb-10 flex items-center gap-4 text-muted-foreground lg:mb-12">
             <span className="text-red-light">Índice</span>
             <span aria-hidden className="h-px flex-1 bg-border" />
-            <span className="tabular-nums">
-              02–{String(total).padStart(2, "0")}
-            </span>
           </div>
 
           {/* Desktop com mouse: índice com prévia no cursor */}

@@ -10,8 +10,8 @@ import {
   type RefObject,
 } from "react"
 import Image from "next/image"
-import { AnimatePresence, motion, useMotionValue } from "motion/react"
-import { ArrowLeft, ArrowRight, ArrowUpRight, Pause, Play } from "lucide-react"
+import { motion } from "motion/react"
+import { ArrowLeft, ArrowRight, ArrowUpRight, LoaderCircle, Pause, Play } from "lucide-react"
 import type { Project } from "@/lib/projects"
 import { useReducedMotionSafe } from "@/lib/use-reduced-motion-safe"
 import {
@@ -29,92 +29,105 @@ const pad = (n: number) => String(n).padStart(2, "0")
 /** Escurecimento máximo do card fora do centro, no carrossel. */
 const SHADE = 0.55
 
+/** Cópias da fila no carrossel: a do meio é a de verdade, as outras dão a volta. */
+const COPIES = 3
+
 /**
- * Celular: carrossel horizontal com snap. O card no centro fica inteiro e
- * aceso; os vizinhos recuam (0,94) e escurecem conforme saem, a mesma
- * profundidade do baralho de antes, agora no eixo X. Tablet e telas de
- * toque maiores: grade. Tocar na capa roda o site ali mesmo (um vídeo por
- * vez; para ao sair da tela ou ao passar o card para o lado).
+ * Celular: carrossel infinito, com o card da vez no centro e os vizinhos
+ * aparecendo dos dois lados (recuam a 0,94 e escurecem conforme saem). A fila
+ * é renderizada três vezes; quando a rolagem para numa cópia de fora, ela
+ * salta em silêncio para o mesmo card na do meio. Tablet e telas de toque
+ * maiores: grade, só com a cópia de verdade. Tocar na capa roda o site ali
+ * mesmo (um vídeo por vez; para ao sair da tela ou ao passar o card).
  */
 export function WorkCards({
   projects,
   start = 2,
-  total,
 }: {
   projects: Project[]
   start?: number
-  total: number
+  total?: number
 }) {
   const [playing, setPlaying] = useState<string | null>(null)
   const reduce = useReducedMotionSafe()
   const listId = useId()
   const listRef = useRef<HTMLOListElement>(null)
-
-  // Paginação: card da vez, pontas e régua (fração já vista da fila)
-  const [current, setCurrent] = useState(0)
-  const [edge, setEdge] = useState({ start: true, end: false })
-  const seen = useMotionValue(0)
+  const n = projects.length
+  // Card no centro (índice na fila inteira, com as cópias); -1 = grade
+  const [current, setCurrent] = useState(-1)
 
   useEffect(() => {
     const ol = listRef.current
     if (!ol) return
     let raf = 0
+    let idle = 0
+    const items = () => Array.from(ol.children) as HTMLElement[]
+    const center = (li: HTMLElement) => li.offsetLeft + li.offsetWidth / 2
+    const carousel = () => ol.scrollWidth - ol.clientWidth > 1
+
     const read = () => {
       raf = 0
-      const items = Array.from(ol.children) as HTMLElement[]
-      const max = ol.scrollWidth - ol.clientWidth
-      if (max <= 1 || items.length === 0) {
-        // Grade (md+): sem profundidade nem paginação
-        for (const li of items) li.style.removeProperty("--d")
+      const list = items()
+      if (!carousel()) {
+        for (const li of list) li.style.removeProperty("--d")
+        setCurrent(-1)
         return
       }
-      const padLeft = parseFloat(getComputedStyle(ol).scrollPaddingLeft) || 0
-      const x = ol.scrollLeft
-      // Onde cada card encaixa; o último pode não chegar à margem (fim da fila)
-      const snaps = items.map((li) =>
-        Math.min(Math.max(li.offsetLeft - padLeft, 0), max),
-      )
-      // Posição fracionária na fila: 0 no primeiro card, n-1 no último
-      let f = items.length - 1
-      for (let k = 0; k < snaps.length - 1; k++) {
-        if (x <= snaps[k + 1]) {
-          const span = snaps[k + 1] - snaps[k]
-          f = k + (span > 0 ? Math.max(0, x - snaps[k]) / span : 1)
-          break
-        }
-      }
-      items.forEach((li, i) => {
+      const mid = ol.scrollLeft + ol.clientWidth / 2
+      const step = list[1] ? center(list[1]) - center(list[0]) : 1
+      const f = (mid - center(list[0])) / step
+      list.forEach((li, i) => {
         li.style.setProperty("--d", Math.min(1, Math.abs(i - f)).toFixed(3))
       })
-      seen.set((ol.clientWidth + x) / ol.scrollWidth)
       setCurrent(Math.round(f))
-      setEdge({ start: x <= 1, end: x >= max - 1 })
     }
-    const schedule = () => {
+
+    // Parou numa cópia de fora: salta uma volta inteira, sem animação
+    const wrap = () => {
+      const list = items()
+      if (!carousel() || list.length < n * COPIES) return
+      const mid = ol.scrollLeft + ol.clientWidth / 2
+      const step = center(list[1]) - center(list[0])
+      const i = Math.round((mid - center(list[0])) / step)
+      const lap = center(list[n]) - center(list[0])
+      if (i < n) ol.scrollLeft += lap
+      else if (i >= 2 * n) ol.scrollLeft -= lap
+    }
+
+    const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(read)
+      clearTimeout(idle)
+      idle = window.setTimeout(wrap, 140)
     }
+
+    // Começa no primeiro card de verdade, centralizado
+    const first = items()[n]
+    if (carousel() && first) ol.scrollLeft = center(first) - ol.clientWidth / 2
     read()
-    ol.addEventListener("scroll", schedule, { passive: true })
-    window.addEventListener("resize", schedule)
+    ol.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", onScroll)
     return () => {
       cancelAnimationFrame(raf)
-      ol.removeEventListener("scroll", schedule)
-      window.removeEventListener("resize", schedule)
+      clearTimeout(idle)
+      ol.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", onScroll)
     }
-  }, [seen])
+  }, [n])
 
   const go = (dir: 1 | -1) => {
     const ol = listRef.current
-    if (!ol) return
-    const items = Array.from(ol.children) as HTMLElement[]
-    const next = items[Math.min(Math.max(current + dir, 0), items.length - 1)]
-    if (!next) return
-    const padLeft = parseFloat(getComputedStyle(ol).scrollPaddingLeft) || 0
+    const next = ol?.children[current + dir] as HTMLElement | undefined
+    if (!ol || !next) return
     ol.scrollTo({
-      left: next.offsetLeft - padLeft,
+      left: next.offsetLeft + next.offsetWidth / 2 - ol.clientWidth / 2,
       behavior: reduce ? "auto" : "smooth",
     })
   }
+
+  // Cópia 0 e 2 só existem no carrossel (no md+ some tudo menos a do meio)
+  const rows = Array.from({ length: COPIES }, (_, copy) =>
+    projects.map((p, i) => ({ p, i, copy, key: `${copy}-${p.slug}` })),
+  ).flat()
 
   return (
     <>
@@ -130,66 +143,36 @@ export function WorkCards({
         <ol
           id={listId}
           ref={listRef}
-          aria-label={`Projetos ${pad(start)} a ${pad(total)}`}
+          aria-label="Mais projetos"
           className={cn(
             "relative flex flex-col gap-5 md:grid md:grid-cols-2 md:gap-6 lg:grid-cols-3",
-            // Carrossel (celular): a fila sangra até a borda da tela e
-            // encaixa cada card na margem da grade
-            "max-md:-mx-5 max-md:snap-x max-md:snap-mandatory max-md:scroll-px-5 max-md:flex-row max-md:gap-3 max-md:overflow-x-auto max-md:overflow-y-hidden max-md:overscroll-x-contain max-md:px-5 [scrollbar-width:none] sm:max-md:-mx-8 sm:max-md:scroll-px-8 sm:max-md:px-8 [&::-webkit-scrollbar]:hidden",
+            // Carrossel (celular): a fila sangra até a borda da tela e o
+            // card da vez encaixa no centro
+            "max-md:-mx-5 max-md:snap-x max-md:snap-mandatory max-md:flex-row max-md:gap-3 max-md:overflow-x-auto max-md:overflow-y-hidden max-md:overscroll-x-contain [scrollbar-width:none] sm:max-md:-mx-8 [&::-webkit-scrollbar]:hidden",
           )}
         >
-          {projects.map((p, i) => (
+          {rows.map(({ p, i, copy, key }, k) => (
             <WorkCard
-              key={p.slug}
+              key={key}
               project={p}
               number={pad(start + i)}
-              total={pad(total)}
-              playing={playing === p.slug}
-              onToggle={(on) => setPlaying(on ? p.slug : null)}
+              clone={copy !== 1}
+              centered={k === current}
+              playing={playing === key}
+              onToggle={(on) => setPlaying(on ? key : null)}
               stripRef={listRef}
             />
           ))}
         </ol>
 
-        {/* Paginação do carrossel: 02 / 10, régua ligada à rolagem e setas */}
-        <div className="mt-5 flex items-center gap-4 md:hidden">
-          <p
-            aria-live="polite"
-            className="font-mono text-[12px] text-muted-foreground tabular-nums"
-          >
-            <span className="sr-only">Projeto </span>
-            <span className="text-foreground">{pad(start + current)}</span>
-            <span aria-hidden> / </span>
-            <span className="sr-only"> de </span>
-            {pad(total)}
-          </p>
-          <span
-            aria-hidden
-            className="relative h-[2px] flex-1 overflow-hidden rounded-full bg-white/10"
-          >
-            <motion.span
-              style={{ scaleX: seen }}
-              className="absolute inset-0 origin-left bg-red-light"
-            />
-          </span>
-          <div className="flex gap-2">
-            <PagerButton
-              label="Projeto anterior"
-              controls={listId}
-              disabled={edge.start}
-              onClick={() => go(-1)}
-            >
-              <ArrowLeft className="size-4" />
-            </PagerButton>
-            <PagerButton
-              label="Próximo projeto"
-              controls={listId}
-              disabled={edge.end}
-              onClick={() => go(1)}
-            >
-              <ArrowRight className="size-4" />
-            </PagerButton>
-          </div>
+        {/* Setas do carrossel (a fila não tem fim: nunca desligam) */}
+        <div className="mt-5 flex justify-end gap-2 md:hidden">
+          <PagerButton label="Projeto anterior" controls={listId} onClick={() => go(-1)}>
+            <ArrowLeft className="size-4" />
+          </PagerButton>
+          <PagerButton label="Próximo projeto" controls={listId} onClick={() => go(1)}>
+            <ArrowRight className="size-4" />
+          </PagerButton>
         </div>
       </motion.div>
     </>
@@ -199,13 +182,11 @@ export function WorkCards({
 function PagerButton({
   label,
   controls,
-  disabled,
   onClick,
   children,
 }: {
   label: string
   controls: string
-  disabled: boolean
   onClick: () => void
   children: ReactNode
 }) {
@@ -214,9 +195,8 @@ function PagerButton({
       type="button"
       aria-label={label}
       aria-controls={controls}
-      disabled={disabled}
       onClick={onClick}
-      className="flex size-11 items-center justify-center rounded-full border border-white/15 text-foreground/85 transition-[background-color,opacity] outline-none focus-visible:ring-2 focus-visible:ring-red-light/70 active:bg-white/10 disabled:opacity-30"
+      className="flex size-11 items-center justify-center rounded-full border border-white/15 text-foreground/85 transition-[background-color,opacity] outline-none focus-visible:ring-2 focus-visible:ring-red-light/70 active:bg-white/10"
     >
       {children}
     </button>
@@ -226,14 +206,18 @@ function PagerButton({
 function WorkCard({
   project: p,
   number,
-  total,
+  clone,
+  centered,
   playing,
   onToggle,
   stripRef,
 }: {
   project: Project
   number: string
-  total: string
+  /** Cópia da volta do carrossel: some no md+ e fica fora do leitor de tela. */
+  clone: boolean
+  /** O card da vez no carrossel: o vídeo já começa a baixar. */
+  centered: boolean
   playing: boolean
   onToggle: (on: boolean) => void
   /** A fila do carrossel (no celular é ela que rola de lado). */
@@ -241,9 +225,13 @@ function WorkCard({
 }) {
   const ref = useRef<HTMLLIElement>(null)
   const host = shortHost(p.host)
-  // Montado no primeiro toque e mantido: voltar a tocar é instantâneo
+  // Montado quando o card chega ao centro (ou no primeiro toque) e mantido:
+  // o vídeo já vem baixando, e voltar a tocar é instantâneo
   const [opened, setOpened] = useState(false)
-  if (playing && !opened) setOpened(true)
+  if ((playing || centered) && !opened) setOpened(true)
+  // Já tem quadro na tela: só então a capa sai (antes disso, nada de preto)
+  const [ready, setReady] = useState(false)
+  const shown = playing && ready
 
   // Saiu da tela tocando, ou foi passado para o lado no carrossel: para
   // (economiza bateria e dados; só um vídeo à vista por vez)
@@ -268,14 +256,14 @@ function WorkCard({
     }
   }, [playing, onToggle, stripRef])
 
-  // Foco pelo teclado num card de fora: ele encaixa na margem, à vista
+  // Foco pelo teclado num card de fora: ele encaixa no centro, à vista
   // (e nunca por baixo do header fixo)
   const onFocus = (e: FocusEvent<HTMLLIElement>) => {
     const strip = stripRef.current
     if (!strip || strip.scrollWidth <= strip.clientWidth + 1) return
     e.currentTarget.scrollIntoView({
       behavior: "instant",
-      inline: "start",
+      inline: "center",
       block: "nearest",
     })
     const r = (e.target as HTMLElement).getBoundingClientRect()
@@ -286,11 +274,20 @@ function WorkCard({
       window.scrollBy({ top: r.bottom - bottom, behavior: "instant" })
   }
 
+  const loading = playing && !ready
+
   return (
     <li
       ref={ref}
       onFocus={onFocus}
-      className="group/card max-md:w-[85%] max-md:max-w-[22rem] max-md:shrink-0 max-md:snap-start md:max-lg:odd:last:col-span-2"
+      aria-hidden={clone || undefined}
+      inert={clone || undefined}
+      className={cn(
+        "group/card max-md:w-[78%] max-md:max-w-[21rem] max-md:shrink-0 max-md:snap-center md:max-lg:odd:last:col-span-2",
+        // As cópias da volta só existem no carrossel (no md+ fica a grade
+        // de verdade) e ficam fora do leitor de tela e do Tab
+        clone && "md:hidden",
+      )}
     >
       {/* Profundidade do carrossel: --d (0 no centro, 1 fora) vem da rolagem */}
       <div className="relative h-full max-md:motion-safe:[scale:calc(1-0.06*var(--d,0))]">
@@ -313,36 +310,44 @@ function WorkCard({
               src={p.image}
               alt={`Mockup do site ${p.name} no desktop e no celular`}
               fill
-              sizes="(min-width: 1440px) 440px, (min-width: 1024px) calc(33vw - 3rem), (min-width: 768px) calc(55vw - 3rem), calc(85vw - 2rem)"
+              sizes="(min-width: 1440px) 440px, (min-width: 1024px) calc(33vw - 3rem), (min-width: 768px) calc(55vw - 3rem), calc(78vw - 1rem)"
               className={cn(
-                "object-cover transition-[opacity,transform] duration-700",
-                playing && "scale-105 opacity-0",
+                "ease-out-expo object-cover transition-[scale,filter] duration-700",
+                // Enquanto carrega, a capa afunda e escurece um pouco: o
+                // toque foi recebido; ela só some debaixo da máscara
+                loading && "scale-[1.03] brightness-75",
+                shown && "scale-110",
               )}
             />
-            <AnimatePresence>
-              {opened && (
-                <motion.div
-                  key="video"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: playing ? 1 : 0 }}
-                  transition={{ duration: 0.5, ease: EASE }}
-                  className={cn(
-                    "absolute inset-0 flex flex-col",
-                    !playing && "pointer-events-none",
-                  )}
-                >
-                  <BrowserBar host={p.host} size="sm" className="h-6" />
-                  <div className="relative min-h-0 flex-1">
-                    <ProjectVideo
-                      project={p}
-                      playing={playing}
-                      label={`Gravação de tela do site ${p.name}`}
-                      className="absolute inset-0"
-                    />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {opened && (
+              // Máscara: o site nasce num círculo a partir do botão de play
+              // e cresce até cobrir a capa
+              <motion.div
+                initial={false}
+                animate={{
+                  clipPath: shown
+                    ? "circle(150% at 86% 84%)"
+                    : "circle(0% at 86% 84%)",
+                }}
+                transition={{ duration: reduceDuration(shown), ease: EASE }}
+                className={cn(
+                  "absolute inset-0 flex flex-col bg-background",
+                  !shown && "pointer-events-none",
+                )}
+              >
+                <BrowserBar host={p.host} size="sm" className="h-6" />
+                <div className="relative min-h-0 flex-1">
+                  <ProjectVideo
+                    project={p}
+                    playing={playing}
+                    preload="auto"
+                    onReady={setReady}
+                    label={`Gravação de tela do site ${p.name}`}
+                    className="absolute inset-0"
+                  />
+                </div>
+              </motion.div>
+            )}
 
             <button
               type="button"
@@ -354,27 +359,22 @@ function WorkCard({
               className="text-label absolute right-2.5 bottom-2.5 flex h-10 items-center gap-2 rounded-full bg-black/65 pr-4 pl-1.5 text-[10px] text-white backdrop-blur-md transition-colors outline-none focus-visible:ring-2 focus-visible:ring-red-light/80 active:bg-black/80"
             >
               <span className="flex size-7 items-center justify-center rounded-full bg-red-primary">
-                {playing ? (
+                {loading ? (
+                  <LoaderCircle className="size-3.5 animate-spin" />
+                ) : playing ? (
                   <Pause className="size-3" fill="currentColor" />
                 ) : (
                   <Play className="ml-px size-3" fill="currentColor" />
                 )}
               </span>
-              {playing ? "Pausar" : "Ver rodando"}
+              {loading ? "Carregando" : playing ? "Pausar" : "Ver rodando"}
             </button>
           </div>
 
           {/* Ficha. Container: o nome mede pela largura do card, não da tela */}
           <div className="@container flex flex-1 flex-col px-5 pt-5 pb-5 sm:px-6 md:max-lg:group-odd/card:group-last/card:pl-4">
             <div className="text-label flex items-center justify-between gap-3 text-[10px] text-muted-foreground max-[380px]:gap-2">
-              <span className="shrink-0">
-                <span className="text-red-light">{number}</span>
-                {/* Tela bem estreita: o total já está na paginação logo abaixo */}
-                <span className="text-foreground/50 max-[380px]:hidden">
-                  {" "}
-                  / {total}
-                </span>
-              </span>
+              <span className="text-red-light shrink-0">{number}</span>
               <span className="flex min-w-0 items-center gap-3 max-[380px]:gap-2">
                 <span className="truncate">{p.segment}</span>
                 {/* Tela bem estreita: a agência sobe para cá (só o logo, o
@@ -442,3 +442,6 @@ function WorkCard({
     </li>
   )
 }
+
+/** A máscara abre devagar e fecha rápido (pausar não pede cerimônia). */
+const reduceDuration = (opening: boolean) => (opening ? 0.9 : 0.35)
