@@ -16,6 +16,7 @@ import {
   type HeroKeyDef,
   type HeroKeyTrick,
 } from "@/components/hero-scene-layout"
+import { logoGeometry } from "@/components/key-logos"
 import { isTypingTarget } from "@/components/hero-typing"
 
 /*
@@ -415,11 +416,18 @@ function offsetWithin(el: HTMLElement, root: HTMLElement) {
 
 /** Geometria do GLB e materiais clonados de uma tecla (cada uma acende
  *  sozinha). */
+/** Lado da tampa de uma tecla 1u (m, a mesma caixa de colisão). */
+const KEY_SIZE = 0.0184
+
 function makePart(def: HeroKeyDef, nodes: Record<string, THREE.Object3D>) {
   const body = nodes[def.node] as THREE.Mesh
   const legend = nodes[`${def.node}_legend`] as THREE.Mesh
   const bodyMat = (body.material as THREE.MeshStandardMaterial).clone()
   const legendMat = (legend.material as THREE.MeshStandardMaterial).clone()
+  // O logo é chapado: visível dos dois lados mesmo com a tecla girando
+  legendMat.side = THREE.DoubleSide
+  // Logo impresso no lugar da legenda em relevo (tamanho no espaço dela)
+  const logo = logoGeometry(def.id, legend, body.geometry, KEY_SIZE / legend.scale.x)
   const base = new THREE.Quaternion()
     .setFromAxisAngle(AX_X, RENDER_ELEVATION)
     .multiply(new THREE.Quaternion(...(def.lg.pose ?? def.pose)))
@@ -430,6 +438,7 @@ function makePart(def: HeroKeyDef, nodes: Record<string, THREE.Object3D>) {
     def,
     body,
     legend,
+    logo,
     bodyMat,
     legendMat,
     base,
@@ -923,7 +932,7 @@ function Keys({
               proxies.current[i] = el
             }}
           >
-            <boxGeometry args={[0.0184, 0.0102, 0.0184]} />
+            <boxGeometry args={[KEY_SIZE, 0.0102, KEY_SIZE]} />
           </mesh>
           <group
             ref={(el) => {
@@ -932,7 +941,7 @@ function Keys({
           >
             <mesh geometry={p.body.geometry} material={p.bodyMat}>
               <mesh
-                geometry={p.legend.geometry}
+                geometry={p.logo}
                 material={p.legendMat}
                 position={p.legend.position}
                 quaternion={p.legend.quaternion}
